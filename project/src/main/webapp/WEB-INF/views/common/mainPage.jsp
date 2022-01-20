@@ -382,7 +382,6 @@
 				});
 			
 			
-			d
 			//다발지역 레이어
 			var manyaccident = new ol.layer.Image({
 		               source: new ol.source.ImageWMS({
