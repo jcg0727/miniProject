@@ -6,6 +6,9 @@
 	<typeAliases>
 		<typeAlias type="java.lang.String" alias="str" />
 		<typeAlias type="java.lang.Integer" alias="int" />
+		
+		<typeAlias type="com.spring.project.dto.testVO" alias="test"/>
+		<typeAlias type="com.spring.project.dto.cctvVO" alias="cctv"/>
 	</typeAliases>			
 	
 </configuration>
