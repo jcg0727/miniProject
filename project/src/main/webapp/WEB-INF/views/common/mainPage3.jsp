@@ -172,6 +172,8 @@
 									    </table>
 					              </div>
 					              <!-- /.card-body -->
+					              <div class="sightFooter"></div>
+					              
 					            </div>
 					            <!-- /.card -->
 					         </div>
@@ -185,120 +187,118 @@
     </div>
     <!-- End of Page Wrapper -->
 	<script type="text/javascript">
-	  // define epsg:5181 projection
-    proj4.defs("EPSG:5181","+proj=tmerc +lat_0=38 +lon_0=127 +k=1 +x_0=200000 +y_0=500000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
+            // define epsg:5181 projection
+            proj4.defs("EPSG:5181","+proj=tmerc +lat_0=38 +lon_0=127 +k=1 +x_0=200000 +y_0=500000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
+        	var flag = 
+        		{
+        			camera : true,
+        			cctv : true,
+        			roadsign : true,
+        			standard : true,
+        			accident : true,
+        			manyaccident : true,
+        			sight : true
+        			
+        		}
+			var map1 = '';
+			
+            ol.proj.setProj4 = proj4;
+            
+            var resolutions = [2048, 1024, 512, 256, 128, 64, 32, 1, 8, 4, 2, 1, 0.5, 0.25];
+            var extent      = [-30000, -60000, 494288, 988576];
+            
+            var projection = new ol.proj.Projection({
+                code: 'EPSG:5181',
+                extent: extent,
+                units: 'm'
+            });
+            
+            // define tile layer
+            var tileLayer = new ol.layer.Tile({
+                title : 'Daum Street Map',
+                visible : true,
+                type : 'base',
+                source : new ol.source.XYZ({
+                    projection: projection,
+                    tileSize: 256,
+                    minZoom: 0,
+                    maxZoom: resolutions.length - 1,
+                    tileGrid: new ol.tilegrid.TileGrid({
+                        origin: [extent[0], extent[1]],
+                        resolutions: resolutions
+                    }),
+                    tileUrlFunction: function (tileCoord, pixelRatio, projection) {
+                        if (tileCoord == null) return undefined;
 
-    ol.proj.setProj4 = proj4;
-    var flag = 
-	{
-		camera : true,
-		cctv : true,
-		roadsign : true,
-		standard : true,
-		accident : true,
-		manyaccident : true,
-		sight : true
-		
-	}
-var map1 = '';
-    var resolutions = [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25];
-    var extent      = [-30000, -60000, 494288, 988576];
-    
-    var projection = new ol.proj.Projection({
-        code: 'EPSG:5181',
-        extent: extent,
-        units: 'm'
-    });
-    
-    // define tile layer
-    var tileLayer = new ol.layer.Tile({
-        title : 'Daum Street Map',
-        visible : true,
-        type : 'base',
-        source : new ol.source.XYZ({
-            projection: projection,
-            tileSize: 256,
-            minZoom: 0,
-            maxZoom: resolutions.length - 1,
-            tileGrid: new ol.tilegrid.TileGrid({
-                origin: [extent[0], extent[1]],
-                resolutions: resolutions
-            }),
-            tileUrlFunction: function (tileCoord, pixelRatio, projection) {
-                if (tileCoord == null) return undefined;
-
-                var s = Math.floor(Math.random() * 4);  // 0 ~ 3
-                var z = resolutions.length - tileCoord[0];
-                var x = tileCoord[1];
-                var y = tileCoord[2];
-				return 'http://map' + s + '.daumcdn.net/map_2d/1912uow/L' + z + '/' + y + '/' + x + '.png';
-				<!-- return 'http://map' + s + '.daumcdn.net/map_skyview/L' + z + '/' + y + '/' + x + '.jpg'; -->
-            },
-            attributions: [
-                new ol.Attribution({ 
-                    html: ['<a href="http://map.daum.net"><img src="http://i1.daumcdn.net/localimg/localimages/07/mapjsapi/m_bi.png"></a>']
+                        var s = Math.floor(Math.random() * 4);  // 0 ~ 3
+                        var z = resolutions.length - tileCoord[0];
+                        var x = tileCoord[1];
+                        var y = tileCoord[2];
+						return 'http://map' + s + '.daumcdn.net/map_2d/1912uow/L' + z + '/' + y + '/' + x + '.png';
+						<!-- return 'http://map' + s + '.daumcdn.net/map_skyview/L' + z + '/' + y + '/' + x + '.jpg'; -->
+                    },
+                    attributions: [
+                        new ol.Attribution({ 
+                            html: ['<a href="http://map.daum.net"><img src="http://i1.daumcdn.net/localimg/localimages/07/mapjsapi/m_bi.png"></a>']
+                        })
+                    ]
                 })
-            ]
-        })
-    });
-    
-	function init() {
-		// set map
-		map1 = new ol.Map({
-			controls : [
-				new ol.control.Attribution({
-					collapsible: true
-				}), 
-				new ol.control.Zoom(), 
-				new ol.control.FullScreen(),
-				new ol.control.MousePosition({
-					projection: 'EPSG:5181',
-					coordinateFormat: ol.coordinate.createStringXY(2)
-				}),
-				new ol.control.ZoomToExtent({
-					extent: extent
-				}),
-				new ol.control.ScaleLine(),
-				new ol.control.LayerSwitcher()
-			],
-			layers : [
-				new ol.layer.Group({
-					title : 'Base Maps',
+            });
+            
+			function init() {
+				// set map
+				map1 = new ol.Map({
+					controls : [
+						new ol.control.Attribution({
+							collapsible: true
+						}), 
+						new ol.control.Zoom(), 
+						new ol.control.FullScreen(),
+						new ol.control.MousePosition({
+							projection: 'EPSG:5181',
+							coordinateFormat: ol.coordinate.createStringXY(2)
+						}),
+						new ol.control.ZoomToExtent({
+							extent: extent
+						}),
+						new ol.control.ScaleLine(),
+						new ol.control.LayerSwitcher()
+					],
 					layers : [
-						tileLayer
-					]
-				  }),
-				new ol.layer.Group({
-					title: 'Tiled WMS',
-					layers: [
-					]
-				})
-			],
-			target : 'map',
-			renderer: 'canvas',
-			interactions : ol.interaction.defaults({
-				shiftDragZoom : true
-			}),
-			view : new ol.View({
-				projection: projection,
-				extent: extent,
-				resolutions: resolutions,
-				maxResolution: resolutions[0],
-				zoomFactor: 1,
-				center : [(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2],
-				zoom : 0
-			})
-		});
-
-		  
-		map1.getView().setCenter([161088, -14272]);
-		map1.getView().setZoom(5
-				);
-	};
+						new ol.layer.Group({
+							title : 'Base Maps',
+							layers : [
+								tileLayer
+							]
+						  }),
+						new ol.layer.Group({
+							title: 'Tiled WMS',
+							layers: [
+							]
+						})
+					],
+					target : 'map',
+					renderer: 'canvas',
+					interactions : ol.interaction.defaults({
+						shiftDragZoom : true
+					}),
+					view : new ol.View({
+						projection: projection,
+						extent: extent,
+						resolutions: resolutions,
+						maxResolution: resolutions[0],
+						zoomFactor: 1,
+						center : [(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2],
+						zoom : 0
+					})
+				});
+				
+				map1.getView().setCenter([161088, -14272]);
+				map1.getView().setZoom(4);
+			};
 	</script>		
 	
 	<script>
-	//관광지
 	$('#sight').click(function(){
 		 $.ajax({
               url : "<%=request.getContextPath()%>/sightList",
@@ -309,52 +309,35 @@ var map1 = '';
             	  for (var i = 0; i < 87; ++i) {
             		  features[i] = new ol.Feature({
 //             		    'geometry': new ol.geom.Point([data[i].x, data[i].y ]),
-            		    'geometry': new ol.format.WKT().readGeometry(data[i].point)
+            		    'geometry': new ol.format.WKT().readGeometry(data[i].point),
+            		    'i': i,
+            		    'size': 10,
             		  });
             		}
+            	  
+            	   var styles = {
+                           '10': new ol.style.Style({
+                             image: new ol.style.Circle({
+                               radius: 5,
+                               fill: new ol.style.Fill({color: '#000000'}),
+                               stroke: new ol.style.Stroke({color: '#ffffff', width: 1})
+                             })
+                           }),
 
-            	   
-            	   var source = new ol.source.Vector({
+               	  };
+				
+            	   var vectorSource = new ol.source.Vector({
                        features : features
                     });
-					
-            	   var clusterSource = new ol.source.Cluster({
-            		   distance: 40,
-            		   source: source
-            		 });
-            	   
-            	   var styleCache = {};
-            	   var sight = new ol.layer.Vector({
-            	     source: clusterSource,
-            	     style: function(feature, resolution) {
-            	       var size = feature.get('features').length;
-            	       var style = styleCache[size];
-            	       if (!style) {
-            	         style = [new ol.style.Style({
-            	           image: new ol.style.Circle({
-            	             radius: 10,
-            	             stroke: new ol.style.Stroke({
-            	               color: '#fff'
-            	             }),
-            	             fill: new ol.style.Fill({
-            	               color: '#3399CC'
-            	             })
-            	           }),
-            	           text: new ol.style.Text({
-            	             text: size.toString(),
-            	             fill: new ol.style.Fill({
-            	               color: '#fff'
-            	             })
-            	           })
-            	         })];
-            	         styleCache[size] = style;
-            	       }
-            	       return style;
-            	     }
-            	   });
 
+                   var vector = new ol.layer.Vector({
+                       source : vectorSource,
+                       style : function(feature) {
+                          return styles[feature.get('size')];
+                       },
+                    });
 					
-                   map1.addLayer(sight);
+                   map1.addLayer(vector);
             	  
             	  
               },//success
@@ -364,73 +347,8 @@ var map1 = '';
            });
 
 	});
-	
-	
-	
-	//교통사고
-	$('#accident').click(function(){
-		 $.ajax({
-              url : "<%=request.getContextPath()%>/accidentList",
-              type : "POST",
-              success : function(data){
-            	  var features = new Array(1772);
-            	  for (var i = 0; i < 1772; ++i) {
-            		  features[i] = new ol.Feature({
-//             		    'geometry': new ol.geom.Point([data[i].x, data[i].y ]),
-            		    'geometry': new ol.format.WKT().readGeometry(data[i].point)
-            		  });
-            		}
-            	   var source = new ol.source.Vector({
-                       features : features
-                    });
-            	   
-            	   var clusterSource = new ol.source.Cluster({
-            		   distance: 40,
-            		   source: source
-            		 });
-            	   
-            	   var styleCache = {};
-            	   
-            	   var accident = new ol.layer.Vector({
-            	     source: clusterSource,
-            	     style: function(feature, resolution) {
-            	       var size = feature.get('features').length;
-            	       var style = styleCache[size];
-            	       if (!style) {
-            	         style = [new ol.style.Style({
-            	           image: new ol.style.Circle({
-            	             radius: 10,
-            	             stroke: new ol.style.Stroke({
-            	               color: '#fff'
-            	             }),
-            	             fill: new ol.style.Fill({
-            	               color: '#000000'
-            	             })
-            	           }),
-            	           text: new ol.style.Text({
-            	             text: size.toString(),
-            	             fill: new ol.style.Fill({
-            	               color: '#fff'
-            	             })
-            	           })
-            	         })];
-            	         styleCache[size] = style;
-            	       }
-            	       return style;
-            	     }
-            	   });
-                   map1.addLayer(accident);
-              },//success
-              error : function(error){
-                 alert("error");
-              }
-           });
-
-	});
-	
-	
 	</script>
-
+	
 	<script>
 
 	var table;

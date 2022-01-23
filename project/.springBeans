@@ -10,6 +10,7 @@
 		<config>src/main/resources/com/spring/project/context/dataSource-context.xml</config>
 		<config>src/main/resources/com/spring/project/context/servlet-context.xml</config>
 		<config>src/main/resources/com/spring/project/context/root-context.xml</config>
+		<config>src/main/resources/com/spring/project/context/application-context.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

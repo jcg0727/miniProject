@@ -7,8 +7,8 @@
 		<typeAlias type="java.lang.String" alias="str" />
 		<typeAlias type="java.lang.Integer" alias="int" />
 		
-		<typeAlias type="com.spring.project.dto.testVO" alias="test"/>
-		<typeAlias type="com.spring.project.dto.cctvVO" alias="cctv"/>
+		<typeAlias type="com.spring.project.dto.sightVO" alias="sight"/>
+		<typeAlias type="com.spring.project.dto.accidentVO" alias="accident"/>
 	</typeAliases>			
 	
 </configuration>
