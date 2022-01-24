@@ -9,6 +9,9 @@
 		
 		<typeAlias type="com.spring.project.dto.sightVO" alias="sight"/>
 		<typeAlias type="com.spring.project.dto.accidentVO" alias="accident"/>
+		<typeAlias type="com.spring.project.dto.cctvVO" alias="cctv"/>
+		<typeAlias type="com.spring.project.dto.cameraVO" alias="camera"/>
+		<typeAlias type="com.spring.project.dto.roadsignVO" alias="roadsign"/>
 	</typeAliases>			
 	
 </configuration>

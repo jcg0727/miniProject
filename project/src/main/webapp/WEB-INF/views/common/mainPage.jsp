@@ -116,8 +116,8 @@
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" onclick="camera();" id="camera">무인단속카메라</a>
-                        <a class="collapse-item" onclick="cctv();" id="cctv">CCTV</a>
+                        <a class="collapse-item" id="camera">무인단속카메라</a>
+                        <a class="collapse-item" id="cctv">CCTV</a>
                         <a class="collapse-item" id="roadsign">도로표지판</a>
                     </div>
                 </div>
@@ -152,8 +152,6 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid" style="padding-left: 0px;padding-right: 0px;">
 						<div id="map" style="height: 600px;"></div>
-						
-						<div style="height: 270px;">
 							<div class="col-12" style="padding-left: 0px; padding-right: 0px;">
 					            <div class="card">
 <!-- 					              <div class="card-header"> -->
@@ -290,7 +288,7 @@ var map1 = '';
 			})
 		});
 
-		  
+		
 		map1.getView().setCenter([161088, -14272]);
 		map1.getView().setZoom(5
 				);
@@ -312,8 +310,8 @@ var map1 = '';
             		    'geometry': new ol.format.WKT().readGeometry(data[i].point)
             		  });
             		}
-
-            	   
+					
+            	              	   
             	   var source = new ol.source.Vector({
                        features : features
                     });
@@ -337,9 +335,10 @@ var map1 = '';
             	               color: '#fff'
             	             }),
             	             fill: new ol.style.Fill({
-            	               color: '#3399CC'
+            	               color: '#1B5E20'
             	             })
             	           }),
+            	           
             	           text: new ol.style.Text({
             	             text: size.toString(),
             	             fill: new ol.style.Fill({
@@ -352,10 +351,15 @@ var map1 = '';
             	       return style;
             	     }
             	   });
-
-					
-                   map1.addLayer(sight);
-            	  
+            		if(flag.sight){
+            			$('#sight').css("background","#bf360c");
+            			map1.addLayer(sight);
+            			flag.cctv = false;
+            		}else{
+            			$('#sight').css("background","none");
+            			map1.removeLayer(sight);
+            			flag.cctv = true;
+            		}
             	  
               },//success
               error : function(error){
@@ -364,7 +368,7 @@ var map1 = '';
            });
 
 	});
-	
+
 	
 	
 	//교통사고
@@ -404,6 +408,212 @@ var map1 = '';
             	               color: '#fff'
             	             }),
             	             fill: new ol.style.Fill({
+            	               color: '#d50000'
+            	             })
+            	           }),
+            	           text: new ol.style.Text({
+            	             text: size.toString(),
+            	             fill: new ol.style.Fill({
+            	               color: '#fff'
+            	             })
+            	           })
+            	         })];
+            	         styleCache[size] = style;
+            	       }
+            	       return style;
+            	     }
+            	   });
+				if(flag.accident){
+					$('#accident').css("background","#ffe0b2");
+					map1.addLayer(accident);
+					flag.accident = false;
+				}else{
+					$('#accident').css("background","none");
+					map1.removeLayer(accident);
+					flag.accident = true;
+				}
+              },//success
+              error : function(error){
+                 alert("error");
+              }
+           });
+
+	});
+	
+	//camera
+	$('#camera').click(function(){
+		 $.ajax({
+              url : "<%=request.getContextPath()%>/cameraList",
+              type : "POST",
+              success : function(data){
+            	  var features = new Array(244);
+            	  for (var i = 0; i < 244; ++i) {
+            		  features[i] = new ol.Feature({
+//             		    'geometry': new ol.geom.Point([data[i].x, data[i].y ]),
+            		    'geometry': new ol.format.WKT().readGeometry(data[i].point)
+            		  });
+            		}
+            	   var source = new ol.source.Vector({
+                       features : features
+                    });
+            	   
+            	   var clusterSource = new ol.source.Cluster({
+            		   distance: 40,
+            		   source: source
+            		 });
+            	   
+            	   var styleCache = {};
+            	   
+            	   var camera = new ol.layer.Vector({
+            	     source: clusterSource,
+            	     style: function(feature, resolution) {
+            	       var size = feature.get('features').length;
+            	       var style = styleCache[size];
+            	       if (!style) {
+            	         style = [new ol.style.Style({
+            	           image: new ol.style.Circle({
+            	             radius: 10,
+            	             stroke: new ol.style.Stroke({
+            	               color: '#fff'
+            	             }),
+            	             fill: new ol.style.Fill({
+            	               color: '#ff6d00'
+            	             })
+            	           }),
+            	           text: new ol.style.Text({
+            	             text: size.toString(),
+            	             fill: new ol.style.Fill({
+            	               color: '#fff'
+            	             })
+            	           })
+            	         })];
+            	         styleCache[size] = style;
+            	       }
+            	       return style;
+            	     }
+            	   });
+            	   if(flag.camera){
+   					$('#camera').css("background","#ffe0b2");
+   					map1.addLayer(camera);
+   					flag.camera = false;
+   				}else{
+   					$('#camera').css("background","none");
+   					map1.removeLayer(camera);
+   					flag.camera = true;
+   				}
+              },//success
+              error : function(error){
+                 alert("error");
+              }
+           });
+
+	});
+	//cctv
+	$('#cctv').click(function(){
+		 $.ajax({
+              url : "<%=request.getContextPath()%>/cctvList",
+              type : "POST",
+              success : function(data){
+            	  var features = new Array(470);
+            	  for (var i = 0; i < 470; ++i) {
+            		  features[i] = new ol.Feature({
+//             		    'geometry': new ol.geom.Point([data[i].x, data[i].y ]),
+            		    'geometry': new ol.format.WKT().readGeometry(data[i].point)
+            		  });
+            		}
+            	   var source = new ol.source.Vector({
+                       features : features
+                    });
+            	   
+            	   var clusterSource = new ol.source.Cluster({
+            		   distance: 40,
+            		   source: source
+            		 });
+            	   
+            	   var styleCache = {};
+            	   
+            	   var cctv = new ol.layer.Vector({
+            	     source: clusterSource,
+            	     style: function(feature, resolution) {
+            	       var size = feature.get('features').length;
+            	       var style = styleCache[size];
+            	       if (!style) {
+            	         style = [new ol.style.Style({
+            	           image: new ol.style.Circle({
+            	             radius: 10,
+            	             stroke: new ol.style.Stroke({
+            	               color: '#fff'
+            	             }),
+            	             fill: new ol.style.Fill({
+            	               color: '#0D47A1'
+            	             })
+            	           }),
+            	           text: new ol.style.Text({
+            	             text: size.toString(),
+            	             fill: new ol.style.Fill({
+            	               color: '#fff'
+            	             })
+            	           })
+            	         })];
+            	         styleCache[size] = style;
+            	       }
+            	       return style;
+            	     }
+            	   });
+            	   if(flag.cctv){
+     					$('#cctv').css("background","#ffe0b2");
+     					map1.addLayer(cctv);
+     					flag.cctv = false;
+     				}else{
+     					$('#cctv').css("background","none");
+     					map1.removeLayer(cctv);
+     					flag.cctv = true;
+     				}
+              },//success
+              error : function(error){
+                 alert("error");
+              }
+           });
+
+	});
+	
+	//roadsign
+	$('#roadsign').click(function(){
+		 $.ajax({
+              url : "<%=request.getContextPath()%>/roadsignList",
+              type : "POST",
+              success : function(data){
+            	  var features = new Array(543);
+            	  for (var i = 0; i < 543; ++i) {
+            		  features[i] = new ol.Feature({
+//             		    'geometry': new ol.geom.Point([data[i].x, data[i].y ]),
+            		    'geometry': new ol.format.WKT().readGeometry(data[i].point)
+            		  });
+            		}
+            	   var source = new ol.source.Vector({
+                       features : features
+                    });
+            	   
+            	   var clusterSource = new ol.source.Cluster({
+            		   distance: 40,
+            		   source: source
+            		 });
+            	   
+            	   var styleCache = {};
+            	   
+            	   var roadsign = new ol.layer.Vector({
+            	     source: clusterSource,
+            	     style: function(feature, resolution) {
+            	       var size = feature.get('features').length;
+            	       var style = styleCache[size];
+            	       if (!style) {
+            	         style = [new ol.style.Style({
+            	           image: new ol.style.Circle({
+            	             radius: 10,
+            	             stroke: new ol.style.Stroke({
+            	               color: '#fff'
+            	             }),
+            	             fill: new ol.style.Fill({
             	               color: '#000000'
             	             })
             	           }),
@@ -419,7 +629,15 @@ var map1 = '';
             	       return style;
             	     }
             	   });
-                   map1.addLayer(accident);
+            	   if(flag.roadsign){
+      					$('#roadsign').css("background","#ffe0b2");
+      					map1.addLayer(roadsign);
+      					flag.roadsign = false;
+      				}else{
+      					$('#roadsign').css("background","none");
+      					map1.removeLayer(roadsign);
+      					flag.roadsign = true;
+      				}
               },//success
               error : function(error){
                  alert("error");
@@ -429,9 +647,24 @@ var map1 = '';
 	});
 	
 	
-	</script>
-
-	<script>
+	
+	function reset(){
+		$('#camera').css("background","none");
+		$('#cctv').css("background","none");
+		$('#roadsign').css("background","none");
+		$('#accident').css("background","none");
+		$('#standard').css("background","none");
+		$('#manyaccident').css("background","none");
+		$('#sight').css("background","none");
+		map1.removeLayer(accident);
+		map1.removeLayer(camera);
+		map1.removeLayer(cctv);
+		map1.removeLayer(roadsign);
+		map1.removeLayer(standard);
+		map1.removeLayer(manyaccident);
+		map1.removeLayer(sight);
+	}
+	
 
 	var table;
 	$(document).ready(function() {
@@ -452,8 +685,8 @@ var map1 = '';
 	} );
 	
 	$(document).on('click', '#table tbody tr', function() {
-       var name = $('#table').DataTable().row($(this)).data().name;
-       alert(name);
+       var point = $('#table').DataTable().row($(this)).data().point;
+       alert(point);
     });
 	</script>
 	

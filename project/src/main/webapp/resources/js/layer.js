@@ -124,108 +124,108 @@
 			
 			});
 			
-			//cameraPoint 레이어
-			var cameraPoint = new ol.layer.Image({
-	               source: new ol.source.ImageWMS({
-	               projection: projection,
-	                 ratio: 1,
-	                 url: 'http://localhost:9090/geoserver/project/wms',
-	                 params: {
-	                 'FORMAT': 'image/png',
-	                        'VERSION': '1.1.1',  
-	                     "LAYERS": 'project:camera',
-	                     "exceptions": 'application/vnd.ogc.se_inimage',
-	                  }
-	               })
-	            });
-			
-		
-			
-			//camera 레이어 조작
-			function camera(){
-				if(flag.camera){
-					$('#camera').css("background","#ffe0b2");
-					map1.addLayer(cameraPoint);
-					flag.camera = false;
-				}else{
-					$('#camera').css("background","none");
-					map1.removeLayer(cameraPoint);
-					flag.camera = true;
-				}
-				
-				
-			}
-			
-			//cctv레이어
-			var cctvPoint = new ol.layer.Image({
-	               source: new ol.source.ImageWMS({
-	               projection: projection,
-	                 ratio: 1,
-	                 url: 'http://localhost:9090/geoserver/project/wms',
-	                 params: {
-	                 'FORMAT': 'image/png',
-	                        'VERSION': '1.1.1',  
-	                     "LAYERS": 'project:cctv',
-	                     "exceptions": 'application/vnd.ogc.se_inimage',
-	                  }
-	               })
-	            });
-			
-			//cctv레이어조작
-			function cctv(){
-				if(flag.cctv){
-					$('#cctv').css("background","#ffe0b2");
-					map1.addLayer(cctvPoint);
-					flag.cctv = false;
-				}else{
-					$('#cctv').css("background","none");
-					map1.removeLayer(cctvPoint);
-					flag.cctv = true;
-				}
-			}
-			
-			//도로표지판 레이어
-			var roadsign = new ol.layer.Image({
-	               source: new ol.source.ImageWMS({
-	               projection: projection,
-	                 ratio: 1,
-	                 url: 'http://localhost:9090/geoserver/project/wms',
-	                 params: {
-	                 'FORMAT': 'image/png',
-	                        'VERSION': '1.1.1',  
-	                     "LAYERS": 'project:roadsign',
-	                     "exceptions": 'application/vnd.ogc.se_inimage',
-	                  }
-	               })
-	            });
-			
-			//표지판 조작
-			$('#roadsign').click(function(){
-				if(flag.roadsign){
-					$('#roadsign').css("background","#ffe0b2");
-					map1.addLayer(roadsign);
-					flag.roadsign = false;
-				}else{
-					$('#roadsign').css("background","none");
-					map1.removeLayer(roadsign);
-					flag.roadsign = true;
-				}
-			});
-
-			function reset(){
-				$('#camera').css("background","none");
-				$('#cctv').css("background","none");
-				$('#roadsign').css("background","none");
-				$('#accident').css("background","none");
-				$('#standard').css("background","none");
-				$('#manyaccident').css("background","none");
-				$('#sight').css("background","none");
-				map1.removeLayer(accident);
-				map1.removeLayer(cameraPoint);
-				map1.removeLayer(cctvPoint);
-				map1.removeLayer(roadsign);
-				map1.removeLayer(standard);
-				map1.removeLayer(standard2);
-				map1.removeLayer(manyaccident);
-				map1.removeLayer(sight);
-			}
+//			//cameraPoint 레이어
+//			var cameraPoint = new ol.layer.Image({
+//	               source: new ol.source.ImageWMS({
+//	               projection: projection,
+//	                 ratio: 1,
+//	                 url: 'http://localhost:9090/geoserver/project/wms',
+//	                 params: {
+//	                 'FORMAT': 'image/png',
+//	                        'VERSION': '1.1.1',  
+//	                     "LAYERS": 'project:camera',
+//	                     "exceptions": 'application/vnd.ogc.se_inimage',
+//	                  }
+//	               })
+//	            });
+//			
+//		
+//			
+//			//camera 레이어 조작
+//			function camera(){
+//				if(flag.camera){
+//					$('#camera').css("background","#ffe0b2");
+//					map1.addLayer(cameraPoint);
+//					flag.camera = false;
+//				}else{
+//					$('#camera').css("background","none");
+//					map1.removeLayer(cameraPoint);
+//					flag.camera = true;
+//				}
+//				
+//				
+//			}
+//			
+//			//cctv레이어
+//			var cctvPoint = new ol.layer.Image({
+//	               source: new ol.source.ImageWMS({
+//	               projection: projection,
+//	                 ratio: 1,
+//	                 url: 'http://localhost:9090/geoserver/project/wms',
+//	                 params: {
+//	                 'FORMAT': 'image/png',
+//	                        'VERSION': '1.1.1',  
+//	                     "LAYERS": 'project:cctv',
+//	                     "exceptions": 'application/vnd.ogc.se_inimage',
+//	                  }
+//	               })
+//	            });
+//			
+//			//cctv레이어조작
+//			function cctv(){
+//				if(flag.cctv){
+//					$('#cctv').css("background","#ffe0b2");
+//					map1.addLayer(cctvPoint);
+//					flag.cctv = false;
+//				}else{
+//					$('#cctv').css("background","none");
+//					map1.removeLayer(cctvPoint);
+//					flag.cctv = true;
+//				}
+//			}
+//			
+//			//도로표지판 레이어
+//			var roadsign = new ol.layer.Image({
+//	               source: new ol.source.ImageWMS({
+//	               projection: projection,
+//	                 ratio: 1,
+//	                 url: 'http://localhost:9090/geoserver/project/wms',
+//	                 params: {
+//	                 'FORMAT': 'image/png',
+//	                        'VERSION': '1.1.1',  
+//	                     "LAYERS": 'project:roadsign',
+//	                     "exceptions": 'application/vnd.ogc.se_inimage',
+//	                  }
+//	               })
+//	            });
+//			
+//			//표지판 조작
+//			$('#roadsign').click(function(){
+//				if(flag.roadsign){
+//					$('#roadsign').css("background","#ffe0b2");
+//					map1.addLayer(roadsign);
+//					flag.roadsign = false;
+//				}else{
+//					$('#roadsign').css("background","none");
+//					map1.removeLayer(roadsign);
+//					flag.roadsign = true;
+//				}
+//			});
+//
+//			function reset(){
+//				$('#camera').css("background","none");
+//				$('#cctv').css("background","none");
+//				$('#roadsign').css("background","none");
+//				$('#accident').css("background","none");
+//				$('#standard').css("background","none");
+//				$('#manyaccident').css("background","none");
+//				$('#sight').css("background","none");
+//				map1.removeLayer(accident);
+//				map1.removeLayer(cameraPoint);
+//				map1.removeLayer(cctvPoint);
+//				map1.removeLayer(roadsign);
+//				map1.removeLayer(standard);
+//				map1.removeLayer(standard2);
+//				map1.removeLayer(manyaccident);
+//				map1.removeLayer(sight);
+//			}
