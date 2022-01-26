@@ -14,9 +14,14 @@ public class sightVO {
 	private String bjd_code;
 	private String bjd_name;
 	private String point;
+	private String btn;
 	
-	
-	
+	public String getBtn() {
+		return btn;
+	}
+	public void setBtn(String btn) {
+		this.btn = btn;
+	}
 	public String getPoint() {
 		return point;
 	}

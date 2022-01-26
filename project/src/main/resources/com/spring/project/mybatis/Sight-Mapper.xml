@@ -9,7 +9,7 @@
 <!-- 	</sql> -->
 
 	<select id="selectSightList" resultType="sight">
-		select st_asText(st_transform(geom,5181)) as point, * from sight
+		select st_asText(st_transform(geom,5181)) as point, *,'' as btn from sight
 	</select>
 	
 	<select id="selectSightTotalCount" resultType="int">
@@ -17,5 +17,7 @@
 		from sight
 	</select>
 	
-	
+	<select id="selectSightBuffer" resultType="sight">
+		select st_buffer(st_transform(geom,5181), 1000) as point, name, geom from sight
+	</select>
 </mapper>

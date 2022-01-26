@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Dump-Mapper">
+	<select id="selectDump" resultType="dump">
+		select st_asText(st_transform(geom,5181)) as point, * from dump
+	</select>
+
+
+</mapper>

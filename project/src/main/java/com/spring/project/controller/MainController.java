@@ -57,6 +57,23 @@ public class MainController {
 		
 		return entity;
 	}
+	
+	@RequestMapping(value="/sightBuffer", method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<List<sightVO>> sightBuffer() throws Exception{
+		ResponseEntity<List<sightVO>> entity = null;
+		
+		try {
+			List<sightVO> list = service.selectSightBuffer();
+			entity = new ResponseEntity<List<sightVO>>(list, HttpStatus.OK);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			entity =  new ResponseEntity<List<sightVO>>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
+	}
 
 	
 }

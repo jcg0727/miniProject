@@ -12,6 +12,12 @@
 		<typeAlias type="com.spring.project.dto.cctvVO" alias="cctv"/>
 		<typeAlias type="com.spring.project.dto.cameraVO" alias="camera"/>
 		<typeAlias type="com.spring.project.dto.roadsignVO" alias="roadsign"/>
+		<typeAlias type="com.spring.project.dto.jejuVO" alias="jeju"/>
+		<typeAlias type="com.spring.project.dto.seogwipoVO" alias="seogwipo"/>
+		<typeAlias type="com.spring.project.dto.dumpVO" alias="dump"/>
+		<typeAlias type="com.spring.project.dto.roadVO" alias="road"/>
+		<typeAlias type="com.spring.project.dto.analyzeVO" alias="analyze"/>
+		
 	</typeAliases>			
 	
 </configuration>

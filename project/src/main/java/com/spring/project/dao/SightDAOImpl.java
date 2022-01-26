@@ -40,4 +40,10 @@ public class SightDAOImpl implements SightDAO {
 		return sightList;
 	}
 
+	@Override
+	public List<sightVO> selectSightBuffer() throws SQLException {
+		List<sightVO> selectSightBuffer = session.selectList("Sight-Mapper.selectSightBuffer");
+		return selectSightBuffer;
+	}
+
 }

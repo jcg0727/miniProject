@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Analyze-Mapper">
+	<select id="selectAccidentPoint" resultType="analyze" parameterType="sight">
+		with tb_stand as (
+			select geom,st_transform(st_setsrid(geom,5179),4326) as trans_geom
+			from standard
+		), sights as (
+			select geom as sig_geom,
+				   name,
+				   new_addr,
+				   x,
+				   y,
+				   st_buffer(geom,0.002)as buffer
+			from sight
+		), grid_union as (
+			select st_union(a.trans_geom)  as grid_geom
+			from tb_stand a,sights b
+			where st_intersects(a.trans_geom,b.buffer)
+			and b."name" = #{name}
+		), grid_inter as (
+		select a.trans_geom as geom_inter
+			from tb_stand a,sights b
+			where st_intersects(a.trans_geom,b.buffer)
+			and b."name" = #{name}
+		), accident_count as(
+			select distinct b.geom, c.grid_geom
+			from sights a, accident b,grid_union c
+			where st_intersects(c.grid_geom, b.geom)
+			and a."name" = #{name}
+		)
+		select st_asText(st_transform(geom,5181)) as accident_point from accident_count
+	</select>
+	<select id="selectCctvPoint" resultType="analyze" parameterType="sight">
+		with tb_stand as (
+			select geom,st_transform(st_setsrid(geom,5179),4326) as trans_geom
+			from standard
+		), sights as (
+			select geom as sig_geom,
+				   name,
+				   new_addr,
+				   x,
+				   y,
+				   st_buffer(geom,0.002)as buffer
+			from sight
+		), grid_union as (
+			select st_union(a.trans_geom)  as grid_geom
+			from tb_stand a,sights b
+			where st_intersects(a.trans_geom,b.buffer)
+			and b."name" = #{name}
+		), grid_inter as (
+		select a.trans_geom as geom_inter
+			from tb_stand a,sights b
+			where st_intersects(a.trans_geom,b.buffer)
+			and b."name" = #{name}
+		),cctv_count as(
+			select distinct b.geom,c.grid_geom
+			from  sights a, cctv b, grid_union c
+			where st_intersects(c.grid_geom, b.geom)
+			and a."name" = #{name}
+		)
+		select st_asText(st_transform(geom,5181)) as cctv_point from cctv_count
+	</select>
+	<select id="selectCameraPoint" resultType="analyze" parameterType="sight">
+		with tb_stand as (
+			select geom,st_transform(st_setsrid(geom,5179),4326) as trans_geom
+			from standard
+		), sights as (
+			select geom as sig_geom,
+				   name,
+				   new_addr,
+				   x,
+				   y,
+				   st_buffer(geom,0.002)as buffer
+			from sight
+		), grid_union as (
+			select st_union(a.trans_geom)  as grid_geom
+			from tb_stand a,sights b
+			where st_intersects(a.trans_geom,b.buffer)
+			and b."name" = #{name}
+		), grid_inter as (
+		select a.trans_geom as geom_inter
+			from tb_stand a,sights b
+			where st_intersects(a.trans_geom,b.buffer)
+			and b."name" = #{name}
+		),camera_count as (
+			select distinct b.geom,c.grid_geom
+			from  sights a, camera b, grid_union c
+			where st_intersects(c.grid_geom, b.geom)
+			and a."name" = #{name}
+		)
+		select st_asText(st_transform(geom,5181)) as camera_point from camera_count
+	</select>
+	<select id="selectDumpPoint" resultType="analyze" parameterType="sight">
+		with tb_stand as (
+			select geom,st_transform(st_setsrid(geom,5179),4326) as trans_geom
+			from standard
+		), sights as (
+			select geom as sig_geom,
+				   name,
+				   new_addr,
+				   x,
+				   y,
+				   st_buffer(geom,0.002)as buffer
+			from sight
+		), grid_union as (
+			select st_union(a.trans_geom)  as grid_geom
+			from tb_stand a,sights b
+			where st_intersects(a.trans_geom,b.buffer)
+			and b."name" = #{name}
+		), grid_inter as (
+		select a.trans_geom as geom_inter
+			from tb_stand a,sights b
+			where st_intersects(a.trans_geom,b.buffer)
+			and b."name" = #{name}
+		),dump_count as ( 
+			select distinct b.geom,c.grid_geom
+			from  sights a, dump b, grid_union c
+			where st_intersects(c.grid_geom, b.geom)
+			and a."name" = #{name}
+		)
+		select st_asText(st_transform(geom,5181)) as dump_point from dump_count
+	</select>
+	<select id="selectRoadsignPoint" resultType="analyze" parameterType="sight">
+		with tb_stand as (
+			select geom,st_transform(st_setsrid(geom,5179),4326) as trans_geom
+			from standard
+		), sights as (
+			select geom as sig_geom,
+				   name,
+				   new_addr,
+				   x,
+				   y,
+				   st_buffer(geom,0.002)as buffer
+			from sight
+		), grid_union as (
+			select st_union(a.trans_geom)  as grid_geom
+			from tb_stand a,sights b
+			where st_intersects(a.trans_geom,b.buffer)
+			and b."name" = #{name}
+		), grid_inter as (
+		select a.trans_geom as geom_inter
+			from tb_stand a,sights b
+			where st_intersects(a.trans_geom,b.buffer)
+			and b."name" = #{name}
+		),roadsign_count as(
+			select distinct b.geom,c.grid_geom
+			from  sights a, roadsign b, grid_union c
+			where st_intersects(c.grid_geom, b.geom)
+			and a."name" = #{name}
+		)
+		select st_asText(st_transform(geom,5181)) as roadsign_point from roadsign_count
+	</select>
+	<select id="selectManyAccidentPoint" resultType="analyze" parameterType="sight">
+		with tb_stand as (
+			select geom,st_transform(st_setsrid(geom,5179),4326) as trans_geom
+			from standard
+		), sights as ( 
+			select geom as sig_geom,
+				   name,
+				   new_addr,
+				   x,
+				   y,
+				   st_buffer(geom,0.002)as buffer
+			from sight
+		), grid_union as (
+			select st_union(a.trans_geom)  as grid_geom
+			from tb_stand a,sights b
+			where st_intersects(a.trans_geom,b.buffer)
+			and b."name" = #{name}
+		), grid_inter as (
+		select a.trans_geom as geom_inter
+			from tb_stand a,sights b
+			where st_intersects(a.trans_geom,b.buffer)
+			and b."name" = #{name}
+		),many_accident as(
+			select distinct b.geom,c.grid_geom
+			from  sights a, manyaccident b, grid_union c
+			where st_intersects(c.grid_geom, b.geom)
+			and a."name" = #{name}
+		)
+		select st_asText(st_transform(geom,5181)) as manyaccident_point from many_accident
+	</select>
+	
+	<select id="selectStandard" resultType="analyze" parameterType="sight">
+		with tb_stand as ( 
+			select geom,st_transform(st_setsrid(geom,5179),4326) as trans_geom
+			from standard
+		), sights as (
+			select geom as sig_geom,
+				   name,
+				   new_addr,
+				   x,
+				   y,
+				   st_buffer(geom,0.002)as buffer
+			from sight
+		) 
+		
+		, grid_union as (
+			select st_union(a.trans_geom)  as grid_geom
+			from tb_stand a,sights b
+			where st_intersects(a.trans_geom,b.buffer)
+			and b."name" = #{name}
+		)
+		, grid_inter as (
+		select a.trans_geom as geom_inter
+			from tb_stand a,sights b
+			where st_intersects(a.trans_geom,b.buffer)
+			and b."name" = #{name}
+		)
+		, accident_count as( 
+			select distinct b.geom, c.grid_geom
+			from sights a, accident b,grid_union c
+			where st_intersects(c.grid_geom, b.geom)
+			and a."name" = #{name}
+		)
+		, cctv_count as( 
+			select distinct b.geom,c.grid_geom
+			from  sights a, cctv b, grid_union c
+			where st_intersects(c.grid_geom, b.geom)
+			and a."name" = #{name}
+		)
+		, camera_count as ( 
+			select distinct b.geom,c.grid_geom
+			from  sights a, camera b, grid_union c
+			where st_intersects(c.grid_geom, b.geom)
+			and a."name" = #{name}
+		)
+		, dump_count as (
+			select distinct b.geom,c.grid_geom
+			from  sights a, dump b, grid_union c
+			where st_intersects(c.grid_geom, b.geom)
+			and a."name" = #{name}
+		)
+		, roadsign_count as(
+			select distinct b.geom,c.grid_geom
+			from  sights a, roadsign b, grid_union c
+			where st_intersects(c.grid_geom, b.geom)
+			and a."name" = #{name}
+		)
+		, many_accident as( 
+			select distinct b.geom,c.grid_geom
+			from  sights a, manyaccident b, grid_union c
+			where st_intersects(c.grid_geom, b.geom)
+			and a."name" = #{name}
+		)
+		select st_asText(st_transform(a.geom_inter, 5181)) as geom_inter,
+			   b.count as accident_cnt, 
+			   c.count as cctv_cnt, 
+			   d.count as camera_cnt, 
+			   e.count as dump_cnt, 
+			   f.count as roadsign_cnt, 
+			   g.count as manyaccident_cnt
+		from grid_inter a 
+		left join accident_count b on st_intersects(a.geom_inter,b.geom)
+		left join cctv_count c on st_intersects(a.geom_inter,c.geom)
+		left join camera_count d on st_intersects(a.geom_inter,d.geom)
+		left join dump_count e on st_intersects(a.geom_inter,e.geom)
+		left join roadsign_count f on st_intersects(a.geom_inter,f.geom)
+		left join many_accident g on st_intersects(a.geom_inter,g.geom)
+		group by 1
+	</select>
+
+</mapper>

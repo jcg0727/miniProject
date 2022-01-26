@@ -38,6 +38,11 @@ public class SightServiceImpl implements SightService{
 		List<sightVO> sightList = sightDAO.selectSightList();
 		return sightList;
 	}
+	@Override
+	public List<sightVO> selectSightBuffer() throws SQLException {
+		List<sightVO> selectSightBuffer = sightDAO.selectSightBuffer();
+		return selectSightBuffer;
+	}
 	
 	
 }

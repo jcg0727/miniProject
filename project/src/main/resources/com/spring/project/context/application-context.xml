@@ -11,6 +11,11 @@
 	<bean id="cctvDAO" class="com.spring.project.dao.CctvDAOImpl" p:sqlSession-ref="sqlSession"/>
 	<bean id="cameraDAO" class="com.spring.project.dao.CameraDAOImpl" p:sqlSession-ref="sqlSession"/>
 	<bean id="roadsignDAO" class="com.spring.project.dao.RoadsignDAOImpl" p:sqlSession-ref="sqlSession"/>
+	<bean id="jejuDAO" class="com.spring.project.dao.JejuDAOImpl" p:sqlSession-ref="sqlSession"/>
+	<bean id="seogwipoDAO" class="com.spring.project.dao.SeogwipoDAOImpl" p:sqlSession-ref="sqlSession"/>
+	<bean id="dumpDAO" class="com.spring.project.dao.DumpDAOImpl" p:sqlSession-ref="sqlSession"/>
+	<bean id="roadDAO" class="com.spring.project.dao.RoadDAOImpl" p:sqlSession-ref="sqlSession"/>
+	<bean id="analyzeDAO" class="com.spring.project.dao.AnalyzeDAOImpl" p:sqlSession-ref="sqlSession"/>
 	
 	<!-- Service -->
 	<bean id="sightService" class="com.spring.project.service.SightServiceImpl"
@@ -32,4 +37,22 @@
 	<bean id="roadsignService" class="com.spring.project.service.RoadsignServiceImpl"
 			p:roadsignDAO-ref="roadsignDAO"
 	/>
+	
+	<bean id="jejuService" class="com.spring.project.service.JejuServiceImpl"
+			p:jejuDAO-ref="jejuDAO"
+	/>
+	<bean id="seogwipoService" class="com.spring.project.service.SeogwipoServiceImpl"
+			p:seogwipoDAO-ref="seogwipoDAO"
+	/>
+	<bean id="dumpService" class="com.spring.project.service.DumpServiceImpl"
+			p:dumpDAO-ref="dumpDAO"
+	/>
+	<bean id="roadService" class="com.spring.project.service.RoadServiceImpl"
+			p:roadDAO-ref="roadDAO"
+	/>
+	<bean id="analyzeService" class="com.spring.project.service.AnalyzeServiceImpl"
+			p:analyzeDAO-ref="analyzeDAO"
+	/>
+	
+	
 </beans>

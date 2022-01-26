@@ -21,5 +21,6 @@
     <!-- js -->
     <script src="<%=request.getContextPath() %>/resources/js/common.js"></script>
     <script src="<%=request.getContextPath() %>/resources/js/layer.js"></script>
+    <script src="<%=request.getContextPath() %>/resources/js/analyze.js"></script>
  
          

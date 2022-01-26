@@ -32,6 +32,7 @@
 		background-color: #f57c00;
 		font-size: 15px;
 	}
+	
 	</style>
 	
 	<!-- table -->
@@ -49,10 +50,39 @@
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/js/lib2/ol3-layerswitcher.css" />
 	<script type="text/javascript" src="<%=request.getContextPath() %>/resources/js/lib2/ol3-layerswitcher.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath() %>/resources/js/lib2/proj4.js"></script>
-       
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 	<!-- Bootstrap core JavaScript-->
 <%--     <script src="<%=request.getContextPath() %>/resources/bootstrap/vendor/jquery/jquery.min.js"></script> --%>
-    
+    <style>
+    	#mapping{
+    		background-color: rgba(0,255,255,0.1);width: 160px;height: 210px; position: absolute; z-index: 2; margin-left: 1410px; margin-top: 420px;
+    	}
+    	#mapping ul li span{
+    	    display: block;
+		    float: left;
+		    height: 15px;
+		    width: 15px;
+		    margin-right: 5px;
+		    margin-left: 0;
+		    border: 1px solid #999;
+		    border-radius: 50%;
+		    }
+    	
+    	#analyzeMapping{
+    		background-color: rgba(0,0,0,0.1);width: 140px;height: 170px; position: absolute; z-index: 2; margin-left: 1425px; margin-top: 250px;
+    	}
+    	#analyzeMapping ul li span{
+    	    display: block;
+		    float: left;
+		    height: 15px;
+		    width: 15px;
+		    margin-right: 5px;
+		    margin-left: 0;
+		    border: 1px solid #999;
+		    }
+    	}
+
+    </style>
 </head>
 
 <body id="page-top" onload="init()">
@@ -82,12 +112,17 @@
             <!-- Nav Item - Pages Collapse Menu -->
              <li class="nav-item">
                 <a class="nav-link" id="sight">
-                    <i class="fas fa-fw fa-border-all" ></i>
+                    <i class="fas fa-map-pin"></i>
                     <span>관광지</span></a>
+            </li>
+             <li class="nav-item">
+                <a class="nav-link" id="road">
+                    <i class="fas fa-road"></i>
+                    <span>도로</span></a>
             </li>
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
-
+			
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
@@ -119,24 +154,35 @@
                         <a class="collapse-item" id="camera">무인단속카메라</a>
                         <a class="collapse-item" id="cctv">CCTV</a>
                         <a class="collapse-item" id="roadsign">도로표지판</a>
+                        <a class="collapse-item" id="dump">과속방지턱</a>
                     </div>
                 </div>
             </li>
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
-
+			
+			
             <!-- Nav Item - Pages Collapse Menu -->
-              <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>분석</span></a>
-            </li>
+<!-- 			<li class="nav-item"> -->
+<!--                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" -->
+<!--                     aria-expanded="true" aria-controls="collapseTwo"> -->
+<!--                     <i class="fas fa-fw fa-chart-area"></i> -->
+<!--                     <span>분석</span> -->
+<!--                 </a> -->
+<!--                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar"> -->
+<!--                     <div class="bg-white py-2 collapse-inner rounded"> -->
+<!--                         <a class="collapse-item" href="">교통시설물 설치 위치 추천</a> -->
+<!--                     </div> -->
+<!--                 </div> -->
+<!--             </li> -->
+            
+            
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
-                <button class="btn btn-danger btn-circle"  id="reset" onclick="reset();">reset</button>
+                <button class="btn btn-danger btn-circle" id="reset" style="width: 65px;">reset</button>
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
 
@@ -148,18 +194,47 @@
 
             <!-- Main Content -->
             <div id="content">
-
                 <!-- Begin Page Content -->
                 <div class="container-fluid" style="padding-left: 0px;padding-right: 0px;">
-						<div id="map" style="height: 600px;"></div>
-							<div class="col-12" style="padding-left: 0px; padding-right: 0px;">
+		               <div id="mapping">
+		               <div style="text-align: center; font: bold; font-size: 25px">레이어 범례</div>
+		                <div>
+									<ul style="list-style: none; text-align: left; padding-left: 10px;">
+										   <li><span style='background:green;'></span>관광지</li>
+										   <li><span style='background:red;'></span>교통사고</li>
+										    <li><span style='background:purple;'></span>교통사고다발지역</li>
+										    <li><span style='background:#ff6d00;'></span>무인단속카메라</li>
+										    <li><span style='background:blue;'></span>CCTV</li>
+		    								<li><span style='background:black;'></span>도로표지판</li>
+		    								<li><span style='background:#8d6e63;'></span>과속방지턱</li>
+									</ul>
+										 
+						</div>
+						</div>
+		               <div id="analyzeMapping" style="display: none;">
+		               <div style="text-align: center; font: bold; font-size: 25px">분석 범례</div>
+		                <div>
+									<ul style="list-style: none; text-align: left; padding-left: 10px;">
+										   <li><span style='background:blue;'></span>안전</li>
+										   <li><span style='background:green;'></span>양호</li>
+										    <li><span style='background:yellow;'></span>보통</li>
+										    <li><span style='background:red;'></span>심각</li>
+										    <input type="button" value="분석리셋" id="analyzeReset"/>
+									</ul>
+										 
+						</div>
+						</div>
+						<div id="map" style="height: 630px;"></div>
+						<div class="loadingImg"></div>
+						<div class="row">
+							<div class="col-9" style="padding-right: 0px;">
 					            <div class="card">
 <!-- 					              <div class="card-header"> -->
 <!-- 					                	<h4 style="float: left;">주요 관광지</h4> -->
 <!-- 					              </div> -->
 					              <!-- /.card-header -->
 					              <div class="card-body table-responsive p-0">
-										<h4>주요 관광지</h4>
+										<h4>주요 관광지 분석</h4>
 										<table id="table" class="table table-striped table-bordered">
 									        <thead>
 									            <tr>
@@ -173,6 +248,32 @@
 					            </div>
 					            <!-- /.card -->
 					         </div>
+							<div class="col-3">
+								<div class="card shadow mb-4" style="height: 435px;">
+                                <!-- Card Header - Dropdown -->
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">교통사고현황</h6>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-pie pt-4">
+                                    	<div class="chartjs-size-monitor">
+                                    		<div class="chartjs-size-monitor-expand">
+                                    			<div class="">
+                                    			</div>
+                                    		</div>
+	                                    	<div class="chartjs-size-monitor-shrink">
+	                                    		<div class="">
+	                                    		</div>
+	                                    	</div>
+                                   		 </div>
+                                        <canvas id="myPieChart" width="447" height="316" style="display: block; width: 358px; height: 300px;" class="chartjs-render-monitor"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+					            <!-- /.card -->
+					         </div>
+						</div>					        
 						</div>
                 </div>
                 <!-- /.container-fluid -->
@@ -195,7 +296,9 @@
 		standard : true,
 		accident : true,
 		manyaccident : true,
-		sight : true
+		sight : true,
+		dump : true,
+		road : true
 		
 	}
 var map1 = '';
@@ -244,20 +347,21 @@ var map1 = '';
 		// set map
 		map1 = new ol.Map({
 			controls : [
-				new ol.control.Attribution({
-					collapsible: true
-				}), 
+// 				new ol.control.Attribution({
+// 					collapsible: true
+// 				}), 
 				new ol.control.Zoom(), 
 				new ol.control.FullScreen(),
 				new ol.control.MousePosition({
 					projection: 'EPSG:5181',
 					coordinateFormat: ol.coordinate.createStringXY(2)
 				}),
-				new ol.control.ZoomToExtent({
-					extent: extent
-				}),
+				new ol.control.ZoomSlider(),
+// 				new ol.control.ZoomToExtent({
+// 					extent: extent
+// 				}),
 				new ol.control.ScaleLine(),
-				new ol.control.LayerSwitcher()
+// 				new ol.control.LayerSwitcher()
 			],
 			layers : [
 				new ol.layer.Group({
@@ -289,25 +393,45 @@ var map1 = '';
 		});
 
 		
-		map1.getView().setCenter([161088, -14272]);
-		map1.getView().setZoom(5
-				);
+		map1.getView().setCenter([161408, -12224]);
+		map1.getView().setZoom(5);
+		
+		map1.on('click', function(event) {
+       	    map1.forEachFeatureAtPixel(event.pixel, function(feature,layer) {
+       	        if ( feature.get('id') != "analyzeStandardFeatures" ) return;
+       	        
+     			var score = feature.get('score');
+     			var accident_cnt = feature.get('accident_cnt');
+     			var cctv_cnt = feature.get('cctv_cnt');
+     			var camera_cnt = feature.get('camera_cnt');
+     			var dump_cnt = feature.get('dump_cnt');
+     			var roadsign_cnt = feature.get('roadsign_cnt');
+     			var manyaccident_cnt = feature.get('manyaccident_cnt');
+     			
+       	        OpenWindow("<%=request.getContextPath()%>/detailAnalyze?score="+score+"&accident_cnt="+accident_cnt+"&manyaccident_cnt="+manyaccident_cnt+"&cctv_cnt="+cctv_cnt+"&camera_cnt="+camera_cnt+"&dump_cnt="+dump_cnt+"&roadsign_cnt="+roadsign_cnt, "교통사고 분석",350,550);
+       	    });
+	   	});
 	};
+	
 	</script>		
 	
 	<script>
-	//관광지
+
+	//관광지 레이어
+	var sight;
 	$('#sight').click(function(){
+	if(flag.sight){
 		 $.ajax({
               url : "<%=request.getContextPath()%>/sightList",
               type : "POST",
               success : function(data){
             	  var features = new Array(87);
-            	  
             	  for (var i = 0; i < 87; ++i) {
             		  features[i] = new ol.Feature({
 //             		    'geometry': new ol.geom.Point([data[i].x, data[i].y ]),
-            		    'geometry': new ol.format.WKT().readGeometry(data[i].point)
+            		    'geometry': new ol.format.WKT().readGeometry(data[i].point),
+            		    'name': data[i].name,
+            		    'i':i
             		  });
             		}
 					
@@ -320,13 +444,15 @@ var map1 = '';
             		   distance: 40,
             		   source: source
             		 });
-            	   
             	   var styleCache = {};
-            	   var sight = new ol.layer.Vector({
+            	   
+            	  sight = new ol.layer.Vector({
             	     source: clusterSource,
             	     style: function(feature, resolution) {
             	       var size = feature.get('features').length;
+            	       var name = feature.get('features')[0].get('name');
             	       var style = styleCache[size];
+            	       
             	       if (!style) {
             	         style = [new ol.style.Style({
             	           image: new ol.style.Circle({
@@ -340,39 +466,40 @@ var map1 = '';
             	           }),
             	           
             	           text: new ol.style.Text({
-            	             text: size.toString(),
+            	             text: name,
+            	             font: 'Bold 10px Arial',
             	             fill: new ol.style.Fill({
-            	               color: '#fff'
-            	             })
+            	               color: 'black'
+            	             }),
+            	             stroke: new ol.style.Stroke({ color: 'yellow', width: 3 })
             	           })
+            	           
             	         })];
-            	         styleCache[size] = style;
+            	         styleCache[0] = style;
             	       }
             	       return style;
             	     }
             	   });
-            		if(flag.sight){
             			$('#sight').css("background","#bf360c");
             			map1.addLayer(sight);
-            			flag.cctv = false;
-            		}else{
-            			$('#sight').css("background","none");
-            			map1.removeLayer(sight);
-            			flag.cctv = true;
-            		}
-            	  
+            			flag.sight = false;
               },//success
               error : function(error){
                  alert("error");
               }
            });
+		 }else{
+       		$('#sight').css("background","none");
+    		map1.removeLayer(sight);
+    		flag.sight = true;
+    	}
 
 	});
-
 	
-	
-	//교통사고
+	//교통사고 레이어
+	var accident;
 	$('#accident').click(function(){
+		if(flag.accident){
 		 $.ajax({
               url : "<%=request.getContextPath()%>/accidentList",
               type : "POST",
@@ -384,6 +511,7 @@ var map1 = '';
             		    'geometry': new ol.format.WKT().readGeometry(data[i].point)
             		  });
             		}
+
             	   var source = new ol.source.Vector({
                        features : features
                     });
@@ -395,7 +523,7 @@ var map1 = '';
             	   
             	   var styleCache = {};
             	   
-            	   var accident = new ol.layer.Vector({
+            	    accident = new ol.layer.Vector({
             	     source: clusterSource,
             	     style: function(feature, resolution) {
             	       var size = feature.get('features').length;
@@ -423,25 +551,28 @@ var map1 = '';
             	       return style;
             	     }
             	   });
-				if(flag.accident){
+				
 					$('#accident').css("background","#ffe0b2");
 					map1.addLayer(accident);
 					flag.accident = false;
-				}else{
-					$('#accident').css("background","none");
-					map1.removeLayer(accident);
-					flag.accident = true;
-				}
+				
               },//success
               error : function(error){
                  alert("error");
               }
            });
+			}else{
+				$('#accident').css("background","none");
+				map1.removeLayer(accident);
+				flag.accident = true;
+			}
 
 	});
 	
-	//camera
+	//camera 레이어
+	var camera;
 	$('#camera').click(function(){
+		 if(flag.camera){
 		 $.ajax({
               url : "<%=request.getContextPath()%>/cameraList",
               type : "POST",
@@ -464,7 +595,7 @@ var map1 = '';
             	   
             	   var styleCache = {};
             	   
-            	   var camera = new ol.layer.Vector({
+            	    camera = new ol.layer.Vector({
             	     source: clusterSource,
             	     style: function(feature, resolution) {
             	       var size = feature.get('features').length;
@@ -492,24 +623,28 @@ var map1 = '';
             	       return style;
             	     }
             	   });
-            	   if(flag.camera){
+            	  
    					$('#camera').css("background","#ffe0b2");
    					map1.addLayer(camera);
    					flag.camera = false;
-   				}else{
-   					$('#camera').css("background","none");
-   					map1.removeLayer(camera);
-   					flag.camera = true;
-   				}
+   				
               },//success
               error : function(error){
                  alert("error");
               }
            });
+		 }else{
+				$('#camera').css("background","none");
+				map1.removeLayer(camera);
+				flag.camera = true;
+			}
 
 	});
-	//cctv
+	
+	//cctv 레이어
+	var cctv;
 	$('#cctv').click(function(){
+		 if(flag.cctv){
 		 $.ajax({
               url : "<%=request.getContextPath()%>/cctvList",
               type : "POST",
@@ -532,7 +667,7 @@ var map1 = '';
             	   
             	   var styleCache = {};
             	   
-            	   var cctv = new ol.layer.Vector({
+            	    cctv = new ol.layer.Vector({
             	     source: clusterSource,
             	     style: function(feature, resolution) {
             	       var size = feature.get('features').length;
@@ -560,25 +695,28 @@ var map1 = '';
             	       return style;
             	     }
             	   });
-            	   if(flag.cctv){
+            	  
      					$('#cctv').css("background","#ffe0b2");
      					map1.addLayer(cctv);
      					flag.cctv = false;
-     				}else{
-     					$('#cctv').css("background","none");
-     					map1.removeLayer(cctv);
-     					flag.cctv = true;
-     				}
+     				
               },//success
               error : function(error){
                  alert("error");
               }
            });
+		 }else{
+				$('#cctv').css("background","none");
+				map1.removeLayer(cctv);
+				flag.cctv = true;
+			}
 
 	});
 	
-	//roadsign
+	//roadsign 레이어
+	var roadsign;
 	$('#roadsign').click(function(){
+		if(flag.roadsign){
 		 $.ajax({
               url : "<%=request.getContextPath()%>/roadsignList",
               type : "POST",
@@ -601,7 +739,7 @@ var map1 = '';
             	   
             	   var styleCache = {};
             	   
-            	   var roadsign = new ol.layer.Vector({
+            	   roadsign = new ol.layer.Vector({
             	     source: clusterSource,
             	     style: function(feature, resolution) {
             	       var size = feature.get('features').length;
@@ -629,26 +767,97 @@ var map1 = '';
             	       return style;
             	     }
             	   });
-            	   if(flag.roadsign){
+            	   
       					$('#roadsign').css("background","#ffe0b2");
       					map1.addLayer(roadsign);
       					flag.roadsign = false;
-      				}else{
-      					$('#roadsign').css("background","none");
-      					map1.removeLayer(roadsign);
-      					flag.roadsign = true;
-      				}
+      				
               },//success
               error : function(error){
                  alert("error");
               }
            });
-
+		}else{
+				$('#roadsign').css("background","none");
+				map1.removeLayer(roadsign);
+				flag.roadsign = true;
+			}
+	});
+	
+	//dump 레이어
+	var dump;
+	$('#dump').click(function(){
+		 if(flag.dump){
+		 $.ajax({
+              url : "<%=request.getContextPath()%>/dumpList",
+              type : "POST",
+              success : function(data){
+            	  var features = new Array(772);
+            	  for (var i = 0; i < 772; ++i) {
+            		  features[i] = new ol.Feature({
+//             		    'geometry': new ol.geom.Point([data[i].x, data[i].y ]),
+            		    'geometry': new ol.format.WKT().readGeometry(data[i].point)
+            		  });
+            		}
+            	   var source = new ol.source.Vector({
+                       features : features
+                    });
+            	   
+            	   var clusterSource = new ol.source.Cluster({
+            		   distance: 40,
+            		   source: source
+            		 });
+            	   
+            	   var styleCache = {};
+            	   
+            	    dump = new ol.layer.Vector({
+            	     source: clusterSource,
+            	     style: function(feature, resolution) {
+            	       var size = feature.get('features').length;
+            	       var style = styleCache[size];
+            	       if (!style) {
+            	         style = [new ol.style.Style({
+            	           image: new ol.style.Circle({
+            	             radius: 10,
+            	             stroke: new ol.style.Stroke({
+            	               color: '#fff'
+            	             }),
+            	             fill: new ol.style.Fill({
+            	               color: '#8d6e63'
+            	             })
+            	           }),
+            	           text: new ol.style.Text({
+            	             text: size.toString(),
+            	             fill: new ol.style.Fill({
+            	               color: '#fff'
+            	             })
+            	           })
+            	         })];
+            	         styleCache[size] = style;
+            	       }
+            	       return style;
+            	     }
+            	   });
+            	  
+      					$('#dump').css("background","#ffe0b2");
+      					map1.addLayer(dump);
+      					flag.dump = false;
+      				
+              },//success
+              error : function(error){
+                 alert("error");
+              }
+           });
+		 }else{
+				$('#dump').css("background","none");
+				map1.removeLayer(dump);
+				flag.dump = true;
+			}
 	});
 	
 	
-	
-	function reset(){
+	//레이어 리셋
+	$('#reset').click(function(){
 		$('#camera').css("background","none");
 		$('#cctv').css("background","none");
 		$('#roadsign').css("background","none");
@@ -656,17 +865,21 @@ var map1 = '';
 		$('#standard').css("background","none");
 		$('#manyaccident').css("background","none");
 		$('#sight').css("background","none");
+		$('#road').css("background","none");
+		$('#dump').css("background","none");
 		map1.removeLayer(accident);
 		map1.removeLayer(camera);
 		map1.removeLayer(cctv);
 		map1.removeLayer(roadsign);
-		map1.removeLayer(standard);
 		map1.removeLayer(manyaccident);
 		map1.removeLayer(sight);
-	}
+		map1.removeLayer(dump);
+		map1.removeLayer(road);
+	});
 	
-
+	//테이블 생성
 	var table;
+	var html;
 	$(document).ready(function() {
 	  $('#table').DataTable({
 			info : false,
@@ -679,20 +892,183 @@ var map1 = '';
 	         },
 	         columns:[
 	         	{data:"name"},
-	         	{data:"new_addr"},
+	         	{data:"new_addr"}
 	         ]
 	    });
 	} );
 	
-	$(document).on('click', '#table tbody tr', function() {
-       var point = $('#table').DataTable().row($(this)).data().point;
-       alert(point);
-    });
-	</script>
+	//분석 레이어 flag
+	var analyzeLayers = {
+		accident_pointLayer: true,
+		cctv_point : true,
+		camera_point : true,
+		dump_point : true,
+		roadsign_point : true,
+		manyaccident_point : true,
+		selectStandardLayer: true
+	};
 	
-	<%@ include file="../include/js.jsp" %>
+	function removeAnalyzeLayers(){
+		if(!analyzeLayers.selectStandardLayer){
+			map1.removeLayer(selectStandardLayer);
+			analyzeLayers.selectStandardLayer = true;
+		}
+		
+		if(!analyzeLayers.accident_pointLayer){
+			map1.removeLayer(accident_pointLayer);
+			analyzeLayers.accident_pointLayer = true;
+		}
+		
+		if(!analyzeLayers.cctv_pointLayer){
+			map1.removeLayer(cctv_pointLayer);
+			analyzeLayers.cctv_pointLayer = true;
+		}
+		
+		if(!analyzeLayers.camera_pointLayer){
+			map1.removeLayer(camera_pointLayer);
+			analyzeLayers.camera_pointLayer = true;
+		}
+		
+		if(!analyzeLayers.dump_pointLayer){
+			map1.removeLayer(dump_pointLayer);
+			analyzeLayers.dump_pointLayer = true;
+		}
+		
+		if(!analyzeLayers.roadsign_pointLayer){
+			map1.removeLayer(roadsign_pointLayer);
+			analyzeLayers.roadsign_pointLayer = true;
+		}
+		
+		if(!analyzeLayers.manyaccident_pointLayer){
+			map1.removeLayer(manyaccident_pointLayer);
+			analyzeLayers.manyaccident_pointLayer = true;
+		}
+		
+		
+		
+	}
+	//테이블 클릭 이벤트
+	$(document).on('click', '#table tbody tr', function() {
+		time();
+		$('#analyzeMapping').css('display','block');
+       var name = $('#table').DataTable().row($(this)).data().name;
+       var point = $('#table').DataTable().row($(this)).data().point;
+       var realCenterXY =point.replace("POINT", "").replace("(", "[").replace(" ", ",").replace( ")", "]");
+       var extent = JSON.parse(realCenterXY);	
+      	map1.getView().setCenter(extent);
+      	map1.getView().setZoom(10);
+      	$.ajax({
+      		url : "<%=request.getContextPath()%>/allPoint",
+      		type : "post",
+      		data : {"name" : name},
+      		success : function(data){
+      			console.log(data);
+      			selectStandard(data.selectStandard);				
+      			accident_point(data.selectAccidentPoint);				
+      			cctv_point(data.selectCctvPoint);
+      			camera_point(data.selectCameraPoint);
+      			dump_point(data.selectDumpPoint);
+      			roadsign_point(data.selectRoadsignPoint);
+      			manyaccident_point(data.selectManyAccidentPoint);
+      		
+      			// Set new default font family and font color to mimic Bootstrap's default styling
+      			Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+      			Chart.defaults.global.defaultFontColor = '#858796';
 
-    
+      			// Pie Chart Example
+      			var ctx = document.getElementById("myPieChart");
+      			var myPieChart = new Chart(ctx, {
+      			  type: 'doughnut',
+      			  data: {
+      			    labels: ["사망사고", "중상사고", "경미한사고", "부상신고"],
+      			    datasets: [{
+      			      data: [55, 30, 15, 20],
+      			      backgroundColor: ['red', 'orange', 'yellow','green'],
+      			      hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf' ,'#36b9cc'],
+      			      hoverBorderColor: "rgba(234, 236, 244, 1)",
+      			    }],
+      			  },
+      			  options: {
+      			    maintainAspectRatio: false,
+      			    tooltips: {
+      			      backgroundColor: "rgb(255,255,255)",
+      			      bodyFontColor: "#858796",
+      			      borderColor: '#dddfeb',
+      			      borderWidth: 1,
+      			      xPadding: 15,
+      			      yPadding: 15,
+      			      displayColors: false,
+      			      caretPadding: 10,
+      			    },
+      			    legend: {
+      			      display: true
+      			    },
+      			    cutoutPercentage: 80,
+      			  },
+      			});
+
+      		},
+      		error : function(error){
+      			console.log(error);
+      		}
+      		
+      	})
+    });
+	
+	$('#analyzeReset').on('click',function(){
+				map1.removeLayer(selectStandardLayer);
+				map1.removeLayer(accident_pointLayer);
+				map1.removeLayer(cctv_pointLayer);
+				map1.removeLayer(camera_pointLayer);
+				map1.removeLayer(dump_pointLayer);
+				map1.removeLayer(roadsign_pointLayer);
+				map1.removeLayer(manyaccident_pointLayer);
+	})
+	
+	
+	</script>
+	<script>
+function time(imageName) {
+    LoadingWithMask('<%=request.getContextPath()%>/resources/time.gif');
+    setTimeout("closeLoadingWithMask()", 7000);
+}
+ 
+function LoadingWithMask(gif) {
+    //화면의 높이와 너비를 구합니다.
+    var maskHeight = $(document).height();
+    var maskWidth  = window.document.body.clientWidth;
+     
+    //화면에 출력할 마스크를 설정해줍니다.
+    var mask       ="<div id='mask' style='position:absolute; z-index:9000; background-color:#000000; display:none; left:0; top:0;'></div>";
+    var loadingImg ='';
+    loadingImg += " <div id='loadingImg'>";
+    loadingImg +=" <img src='"+ gif +"' style='position: absolute; display: block; margin: 0px auto; z-index:9500; top:50%; left:50%'/>";
+    loadingImg += " </div>";
+    //화면에 레이어 추가
+    $('body')
+        .append(mask)
+ 
+    //마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채웁니다.
+    $('#mask').css({
+            'width' : maskWidth,
+            'height': maskHeight,
+            'opacity' :'0.3'
+    });
+  
+    //마스크 표시
+    $('#mask').show();
+  
+    //로딩중 이미지 표시
+    $('.loadingImg').append(loadingImg);
+    $('#loadingImg').show();
+}
+function closeLoadingWithMask() {
+    $('#mask, #loadingImg').hide();
+    $('#mask, #loadingImg').empty(); 
+}
+
+</script>
+	<%@ include file="../include/js.jsp" %>
 </body>
 
 </html>

@@ -3,7 +3,7 @@
 
 <mapper namespace="Accident-Mapper">
 	<select id="selectAccident" resultType="accident">
-		select st_asText(st_transform(geom,5181)) as point, * from accident;
+		select st_asText(st_transform(geom,5181)) as point, * from accident
 	</select>
 
 

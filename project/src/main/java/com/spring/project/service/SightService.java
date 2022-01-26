@@ -13,4 +13,6 @@ public interface SightService {
 	Map<String, Object> getSightList(SearchCriteria cri) throws SQLException;
 	
 	List<sightVO> selectSightList() throws SQLException;
+	
+	List<sightVO> selectSightBuffer() throws SQLException;
 }

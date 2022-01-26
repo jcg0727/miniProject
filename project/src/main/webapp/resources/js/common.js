@@ -1,5 +1,15 @@
 var formData = "";
 
+function OpenWindow(UrlStr, WinTitle, WinWidth, WinHeight) {
+	event.stopPropagation();
+	winleft = (window.screen.width/2) - (WinWidth/2);
+	wintop = (window.screen.height/2)- (WinHeight/2);
+	var win = window.open(UrlStr , WinTitle , "scrollbars=yes,width="+ WinWidth +", " 
+							+"height="+ WinHeight +", top="+ wintop +", left=" 
+							+ winleft +", resizable=yes, status=yes"  );
+	win.focus() ; 
+}
+
 
 // 목록 검색
 function list_go(page,url){

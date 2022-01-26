@@ -12,4 +12,6 @@ public interface SightDAO {
 	int selectSightTotalCount(SearchCriteria cri) throws SQLException;
 	
 	List<sightVO> selectSightList() throws SQLException;
+	
+	List<sightVO> selectSightBuffer() throws SQLException;
 }
