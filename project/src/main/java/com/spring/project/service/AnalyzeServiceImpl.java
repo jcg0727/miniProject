@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.spring.project.dao.AnalyzeDAO;
 import com.spring.project.dto.analyzeVO;
+import com.spring.project.dto.countVO;
 
 public class AnalyzeServiceImpl implements AnalyzeService {
 	
@@ -35,6 +36,12 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 		dataMap.put("selectManyAccidentPoint", selectManyAccidentPoint);
 		dataMap.put("selectStandard", selectStandard);
 		return dataMap;
+	}
+
+	@Override
+	public List<countVO> selectCnt(String name) throws SQLException {
+		List<countVO> selectCnt = analyzeDAO.selectCount(name);
+		return selectCnt;
 	}
 	
 	

@@ -261,5 +261,52 @@
 		left join many_accident g on st_intersects(a.geom_inter,g.geom)
 		group by 1
 	</select>
-
+	
+	<select id="selectCnt" parameterType="sight" resultType="count">
+		with tb_stand as (
+			select geom,st_transform(st_setsrid(geom,5179),4326) as trans_geom
+			from standard
+		), sights as ( 
+			select geom as sig_geom,
+				   name,
+				   new_addr,
+				   x,
+				   y,
+				   st_buffer(geom,0.002)as buffer
+			from sight
+		) 
+		
+		, grid_union as (
+			select st_union(a.trans_geom)  as grid_geom
+			from tb_stand a,sights b
+			where st_intersects(a.trans_geom,b.buffer)
+			and b."name" = #{name}
+		)
+		, grid_inter as (
+		select a.trans_geom as geom_inter
+			from tb_stand a,sights b
+			where st_intersects(a.trans_geom,b.buffer)
+			and b."name" = #{name}
+		)
+		, accident_count as( 
+			select distinct b.geom, c.grid_geom, b.death_count,b.seriously_count, b.slightly_count, b.injury_count
+			from sights a, accident b,grid_union c
+			where st_intersects(c.grid_geom, b.geom)
+			and a."name" = #{name}
+		)
+		, many_accident as( 
+			select distinct b.geom,c.grid_geom, b.death_count, b.seriously_count, b.slightly_count, b.injury_count
+			from  sights a, manyaccident b, grid_union c
+			where st_intersects(c.grid_geom, b.geom)
+			and a."name" = #{name}
+		)
+		select 
+			coalesce(sum(b.death_count),0) + coalesce(sum(c.death_count),0) as death_cnt,
+			coalesce(sum(b.seriously_count),0) + coalesce(sum(c.seriously_count),0) as seriously_cnt,
+			coalesce(sum(b.slightly_count),0) + coalesce(sum(c.slightly_count),0) as slightly_cnt,
+			coalesce(sum(b.injury_count),0) + coalesce(sum(c.injury_count),0) as injury_cnt
+		from grid_inter a 
+		left join accident_count b on st_intersects(a.geom_inter,b.geom)
+		left join many_accident c on st_intersects(a.geom_inter,c.geom)
+	</select>
 </mapper>

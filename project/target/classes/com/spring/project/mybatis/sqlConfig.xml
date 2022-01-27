@@ -17,6 +17,7 @@
 		<typeAlias type="com.spring.project.dto.dumpVO" alias="dump"/>
 		<typeAlias type="com.spring.project.dto.roadVO" alias="road"/>
 		<typeAlias type="com.spring.project.dto.analyzeVO" alias="analyze"/>
+		<typeAlias type="com.spring.project.dto.countVO" alias="count"/>
 		
 	</typeAliases>			
 	

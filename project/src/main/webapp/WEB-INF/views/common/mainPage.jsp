@@ -160,23 +160,6 @@
             </li>
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
-			
-			
-            <!-- Nav Item - Pages Collapse Menu -->
-<!-- 			<li class="nav-item"> -->
-<!--                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" -->
-<!--                     aria-expanded="true" aria-controls="collapseTwo"> -->
-<!--                     <i class="fas fa-fw fa-chart-area"></i> -->
-<!--                     <span>분석</span> -->
-<!--                 </a> -->
-<!--                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar"> -->
-<!--                     <div class="bg-white py-2 collapse-inner rounded"> -->
-<!--                         <a class="collapse-item" href="">교통시설물 설치 위치 추천</a> -->
-<!--                     </div> -->
-<!--                 </div> -->
-<!--             </li> -->
-            
-            
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -250,11 +233,11 @@
 					         </div>
 							<div class="col-3">
 								<div class="card shadow mb-4" style="height: 435px;">
-                                <!-- Card Header - Dropdown -->
+<!--                                 Card Header - Dropdown -->
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">교통사고현황</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">최근3개년 교통사고 통계</h6>
                                 </div>
-                                <!-- Card Body -->
+<!--                                 Card Body -->
                                 <div class="card-body">
                                     <div class="chart-pie pt-4">
                                     	<div class="chartjs-size-monitor">
@@ -271,7 +254,7 @@
                                     </div>
                                 </div>
                             </div>
-					            <!-- /.card -->
+<!-- 					            /.card -->
 					         </div>
 						</div>					        
 						</div>
@@ -408,7 +391,7 @@ var map1 = '';
      			var roadsign_cnt = feature.get('roadsign_cnt');
      			var manyaccident_cnt = feature.get('manyaccident_cnt');
      			
-       	        OpenWindow("<%=request.getContextPath()%>/detailAnalyze?score="+score+"&accident_cnt="+accident_cnt+"&manyaccident_cnt="+manyaccident_cnt+"&cctv_cnt="+cctv_cnt+"&camera_cnt="+camera_cnt+"&dump_cnt="+dump_cnt+"&roadsign_cnt="+roadsign_cnt, "교통사고 분석",350,550);
+       	        OpenWindow("<%=request.getContextPath()%>/detailAnalyze?score="+score+"&accident_cnt="+accident_cnt+"&manyaccident_cnt="+manyaccident_cnt+"&cctv_cnt="+cctv_cnt+"&camera_cnt="+camera_cnt+"&dump_cnt="+dump_cnt+"&roadsign_cnt="+roadsign_cnt, "교통사고 분석",350,570);
        	    });
 	   	});
 	};
@@ -456,7 +439,7 @@ var map1 = '';
             	       if (!style) {
             	         style = [new ol.style.Style({
             	           image: new ol.style.Circle({
-            	             radius: 10,
+            	             radius: 15,
             	             stroke: new ol.style.Stroke({
             	               color: '#fff'
             	             }),
@@ -970,19 +953,32 @@ var map1 = '';
       			dump_point(data.selectDumpPoint);
       			roadsign_point(data.selectRoadsignPoint);
       			manyaccident_point(data.selectManyAccidentPoint);
-      		
-      			// Set new default font family and font color to mimic Bootstrap's default styling
+      		},
+      		error : function(error){
+      			console.log(error);
+      		}
+      	})//pointajax
+      	//cntajax
+       	$.ajax({
+      		url : "<%=request.getContextPath()%>/count",
+      		type : "post",
+      		data : {"name" : name},
+      		success : function(data){
+      		// Set new default font family and font color to mimic Bootstrap's default styling
       			Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
       			Chart.defaults.global.defaultFontColor = '#858796';
-
+				var death_cnt = data[0].death_cnt;
+				var seriously_cnt = data[0].seriously_cnt;
+				var slightly_cnt = data[0].slightly_cnt;
+				var injury_cnt = data[0].injury_cnt;
       			// Pie Chart Example
       			var ctx = document.getElementById("myPieChart");
       			var myPieChart = new Chart(ctx, {
-      			  type: 'doughnut',
+      			  type: 'bar',
       			  data: {
       			    labels: ["사망사고", "중상사고", "경미한사고", "부상신고"],
       			    datasets: [{
-      			      data: [55, 30, 15, 20],
+      			      data: [death_cnt,seriously_cnt,slightly_cnt,injury_cnt],
       			      backgroundColor: ['red', 'orange', 'yellow','green'],
       			      hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf' ,'#36b9cc'],
       			      hoverBorderColor: "rgba(234, 236, 244, 1)",
@@ -1001,7 +997,7 @@ var map1 = '';
       			      caretPadding: 10,
       			    },
       			    legend: {
-      			      display: true
+      			      display: false
       			    },
       			    cutoutPercentage: 80,
       			  },
@@ -1011,7 +1007,6 @@ var map1 = '';
       		error : function(error){
       			console.log(error);
       		}
-      		
       	})
     });
 	

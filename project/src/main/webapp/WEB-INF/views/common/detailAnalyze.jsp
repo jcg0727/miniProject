@@ -36,7 +36,7 @@
 <body>
 <div class="card">
               <div class="card-header" style="background-color: #ffe0b2">
-                <h3 class="card-title" style="text-align: center; ">분석 현황</h3>
+                <h3 class="card-title" style="text-align: center; margin-bottom: 0px;">분석 현황</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body p-0">
@@ -88,7 +88,13 @@
               </div>
               <!-- /.card-body -->
             </div>
+                <button type="button" class="btn btn-block btn-secondary btn-sm" style="width: 50px; margin-left: 149px;" id="close">닫기</button>
             
             <%@ include file="../include/js.jsp" %>
+            <script>
+            	$('#close').on('click',function(){
+            		window.close();
+            	})
+            </script>
 </body>
 </html>

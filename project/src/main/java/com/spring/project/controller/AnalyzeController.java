@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.project.dto.analyzeVO;
 import com.spring.project.dto.cameraVO;
+import com.spring.project.dto.countVO;
 import com.spring.project.service.AnalyzeService;
 
 @Controller
@@ -46,4 +47,21 @@ public class AnalyzeController {
 		
 		return mnv;
 	}
+	
+	@RequestMapping(value="/count", method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<List<countVO>> count(String name) throws Exception{
+		ResponseEntity<List<countVO>> entity = null;
+		try {
+			List<countVO> cnt = service.selectCnt(name);
+			entity =  new ResponseEntity<List<countVO>>(cnt, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			entity =  new ResponseEntity<List<countVO>>(HttpStatus.BAD_REQUEST);
+			
+		}
+		
+		return entity;
+	}
+	
 }

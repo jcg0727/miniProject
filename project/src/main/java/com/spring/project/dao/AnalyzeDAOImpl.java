@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
+import com.spring.project.dto.countVO;
 import com.spring.project.dto.analyzeVO;
 
 public class AnalyzeDAOImpl implements AnalyzeDAO {
@@ -55,6 +56,12 @@ public class AnalyzeDAOImpl implements AnalyzeDAO {
 	public List<analyzeVO> selectStandard(String name) throws SQLException {
 		List<analyzeVO> selectStandard = session.selectList("Analyze-Mapper.selectStandard", name);
 		return selectStandard;
+	}
+
+	@Override
+	public List<countVO> selectCount(String name) throws SQLException {
+		List<countVO> selectCount = session.selectList("Analyze-Mapper.selectCnt", name);
+		return selectCount;
 	}
 
 }

@@ -5,11 +5,11 @@ Chart.defaults.global.defaultFontColor = '#858796';
 // Pie Chart Example
 var ctx = document.getElementById("myPieChart");
 var myPieChart = new Chart(ctx, {
-  type: 'doughnut',
+  type: 'bar',
   data: {
     labels: ["사망사고", "중상사고", "경미한사고", "부상신고"],
     datasets: [{
-      data: [25, 25, 25, 25],
+      data: [0, 0, 0, 0],
       backgroundColor: ['red', 'orange', 'yellow','green'],
       hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf' ,'#36b9cc'],
       hoverBorderColor: "rgba(234, 236, 244, 1)",
@@ -28,7 +28,7 @@ var myPieChart = new Chart(ctx, {
       caretPadding: 10,
     },
     legend: {
-      display: true
+      display: false
     },
     cutoutPercentage: 80,
   },
