@@ -55,13 +55,13 @@
 <%--     <script src="<%=request.getContextPath() %>/resources/bootstrap/vendor/jquery/jquery.min.js"></script> --%>
     <style>
     	#mapping{
-    		background-color: rgba(0,255,255,0.1);width: 160px;height: 210px; position: absolute; z-index: 2; margin-left: 1410px; margin-top: 420px;
+    		background-color: rgba(0,255,255);width: 173px;height: 210px; position: absolute; z-index: 2; margin-left: 1410px; margin-top: 395px;font-size:17px;
     	}
     	#mapping ul li span{
     	    display: block;
 		    float: left;
-		    height: 15px;
-		    width: 15px;
+		    height: 20px;
+		    width: 20px;
 		    margin-right: 5px;
 		    margin-left: 0;
 		    border: 1px solid #999;
@@ -69,13 +69,13 @@
 		    }
     	
     	#analyzeMapping{
-    		background-color: rgba(0,0,0,0.1);width: 140px;height: 170px; position: absolute; z-index: 2; margin-left: 1425px; margin-top: 250px;
+    		background-color:gray;width: 140px;height: 170px; position: absolute; z-index: 2; margin-left: 1440px; margin-top: 220px;color:white;font-size:17px;
     	}
     	#analyzeMapping ul li span{
     	    display: block;
 		    float: left;
-		    height: 15px;
-		    width: 15px;
+		    height: 20px;
+		    width: 20px;
 		    margin-right: 5px;
 		    margin-left: 0;
 		    border: 1px solid #999;
@@ -111,9 +111,10 @@
             
             <!-- Nav Item - Pages Collapse Menu -->
              <li class="nav-item">
-                <a class="nav-link" id="sight">
+                <a class="nav-link">
                     <i class="fas fa-map-pin"></i>
-                    <span>관광지</span></a>
+                    <span>관광지 위치</span> <input type="checkbox" id="sight"></a>
+                   
             </li>
 <!--              <li class="nav-item"> -->
 <!--                 <a class="nav-link" id="road"> -->
@@ -128,12 +129,12 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-car-crash"></i>
-                    <span>교통사고 다발지역</span>
+                    <span>교통사고 위치</span>
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" id="accident">교통사고</a>
-                        <a class="collapse-item" id="manyaccident">교통사고다발지역</a>
+                        <a class="collapse-item">교통사고 <input type="checkbox" id="accident"></a>
+                        <a class="collapse-item">교통사고다발지역 <input type="checkbox" id="manyaccident"></a>
                     </div>
                 </div>
             </li>
@@ -146,15 +147,15 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-video"></i>
-                    <span>교통시설물</span>
+                    <span>교통시설물 위치</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" id="camera">무인단속카메라</a>
-                        <a class="collapse-item" id="cctv">CCTV</a>
-                        <a class="collapse-item" id="roadsign">도로표지판</a>
-                        <a class="collapse-item" id="dump">과속방지턱</a>
+                        <a class="collapse-item" id="camera">무인단속카메라 <input type="checkbox" id="camera"></a>
+                        <a class="collapse-item" id="dump">과속방지턱 <input type="checkbox" id="dump"></a>
+                        <a class="collapse-item" id="roadsign">도로표지판 <input type="checkbox" id="roadsign"></a>
+                        <a class="collapse-item" id="cctv">CCTV <input type="checkbox" id="cctv"></a>
                     </div>
                 </div>
             </li>
@@ -165,7 +166,7 @@
             <hr class="sidebar-divider d-none d-md-block">
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
-                <button class="btn btn-danger btn-circle" id="reset" style="width: 130px;">레이어 초기화</button>
+                <button class="btn btn-danger btn-circle" id="reset" style="width: 130px;">포인트 초기화</button>
 <!--                 <button class="rounded-circle border-0" id="sidebarToggle"></button> -->
             </div>
 
@@ -180,7 +181,7 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid" style="padding-left: 0px;padding-right: 0px;">
 		               <div id="mapping">
-		               <div style="text-align: center; font: bold; font-size: 25px">레이어 범례</div>
+		               <div style="text-align: center; font: bold; font-size: 25px">포인트 범례</div>
 		                <div>
 									<ul style="list-style: none; text-align: left; padding-left: 10px;">
 										   <li><span style='background:green;'></span>관광지</li>
@@ -207,7 +208,7 @@
 										 
 						</div>
 						</div>
-						<div id="map" style="height: 630px;"></div>
+						<div id="map" style="height: 605px;"></div>
 						<div class="loadingImg"></div>
 						<div class="row">
 							<div class="col-9" style="padding-right: 0px;">
@@ -217,7 +218,7 @@
 <!-- 					              </div> -->
 					              <!-- /.card-header -->
 					              <div class="card-body table-responsive p-0">
-										<h4>주요 관광지 분석</h4>
+										<h4>주요 관광지 교통사고 분석</h4>
 										<table id="table" class="table table-striped table-bordered">
 									        <thead>
 									            <tr>
@@ -232,13 +233,13 @@
 					            <!-- /.card -->
 					         </div>
 							<div class="col-3">
-								<div class="card shadow mb-4" style="height: 435px;">
+								<div class="card shadow mb-4" style="height: 340px;">
 <!--                                 Card Header - Dropdown -->
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">최근3개년 교통사고 통계</h6>
                                 </div>
 <!--                                 Card Body -->
-                                <div class="card-body">
+                                <div class="card-body" style="padding-top: 10px; padding-bottom: 10px;padding-right: 10px; padding-left: 10px;">
                                     <div class="chart-pie pt-4">
                                     	<div class="chartjs-size-monitor">
                                     		<div class="chartjs-size-monitor-expand">
@@ -250,7 +251,7 @@
 	                                    		</div>
 	                                    	</div>
                                    		 </div>
-                                        <canvas id="myPieChart" width="447" height="316" style="display: block; width: 358px; height: 300px;" class="chartjs-render-monitor"></canvas>
+                                        <canvas id="myPieChart" style="display: block; width: 358px; height: 350px;" class="chartjs-render-monitor"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -266,6 +267,10 @@
         <!-- End of Content Wrapper -->
     </div>
     <!-- End of Page Wrapper -->
+    
+   	<form action="<%=request.getContextPath()%>/detailAnalyze" id="allFeature" method="post">
+		<input type="hidden" value="" id="allFeatureGo" name="allFeatureGo">
+	</form>
 	<script type="text/javascript">
 	  // define epsg:5181 projection
     proj4.defs("EPSG:5181","+proj=tmerc +lat_0=38 +lon_0=127 +k=1 +x_0=200000 +y_0=500000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
@@ -379,25 +384,30 @@ var map1 = '';
 		map1.getView().setCenter([161408, -12224]);
 		map1.getView().setZoom(5);
 		
-		map1.on('click', function(event) {
-       	    map1.forEachFeatureAtPixel(event.pixel, function(feature,layer) {
-       	        if ( feature.get('id') != "analyzeStandardFeatures" ) return;
-       	        
-     			var score = feature.get('score');
-     			var accident_cnt = feature.get('accident_cnt');
-     			var cctv_cnt = feature.get('cctv_cnt');
-     			var camera_cnt = feature.get('camera_cnt');
-     			var dump_cnt = feature.get('dump_cnt');
-     			var roadsign_cnt = feature.get('roadsign_cnt');
-     			var manyaccident_cnt = feature.get('manyaccident_cnt');
+// 		var allFeature[] ;
+		
+// 		map1.on('click', function(event) {
+//        	    map1.forEachFeatureAtPixel(event.pixel, function(feature,layer) {
+//        	        if ( feature.get('id') != "analyzeStandardFeatures" ) return;
+// //      			var score = feature.get('score');
+// //      			var accident_cnt = feature.get('accident_cnt');
+// //      			var cctv_cnt = feature.get('cctv_cnt');
+// //      			var camera_cnt = feature.get('camera_cnt');
+// //      			var dump_cnt = feature.get('dump_cnt');
+// //      			var roadsign_cnt = feature.get('roadsign_cnt');
+// //      			var manyaccident_cnt = feature.get('manyaccident_cnt');
+//      			 allFeature = feature.get('allFeature');
      			
-       	        OpenWindow("<%=request.getContextPath()%>/detailAnalyze?score="+score+"&accident_cnt="+accident_cnt+"&manyaccident_cnt="+manyaccident_cnt+"&cctv_cnt="+cctv_cnt+"&camera_cnt="+camera_cnt+"&dump_cnt="+dump_cnt+"&roadsign_cnt="+roadsign_cnt, "교통사고 분석",350,570);
-       	    });
-	   	});
+//      			console.log(allFeature);
+// //      			document.getElementById("allFeatureGo").value = allFeature;
+// //      			document.getElementById("allFeature").submit();
+<%--        	        OpenWindow("<%=request.getContextPath()%>/detailAnalyze?allFeature="+allFeature,"교통사고 분석",1100,550); --%>
+//        	    });
+// 	   	});
 	};
 	
 	</script>		
-	
+
 	<script>
 
 	//관광지 레이어
@@ -414,7 +424,9 @@ var map1 = '';
 //             		    'geometry': new ol.geom.Point([data[i].x, data[i].y ]),
             		    'geometry': new ol.format.WKT().readGeometry(data[i].point),
             		    'name': data[i].name,
-            		    'i':i
+            		    'i':i,
+//             		    'size': 10
+
             		  });
             		}
 					
@@ -463,6 +475,7 @@ var map1 = '';
             	       return style;
             	     }
             	   });
+
             			$('#sight').css("background","#bf360c");
             			map1.addLayer(sight);
             			flag.sight = false;
@@ -838,7 +851,6 @@ var map1 = '';
 			}
 	});
 	
-	
 	//레이어 리셋
 	$('#reset').click(function(){
 		$('#camera').css("background","none");
@@ -860,6 +872,43 @@ var map1 = '';
 		map1.removeLayer(road);
 	});
 	
+	var selectLayer; 
+	function childValue(gid){
+		alert(gid);
+		var allFeatureT = allFeature;
+		var _features = new Array();
+		for(var i =0; i<allFeatureT.length; ++i){
+				if(allFeatureT[i].gid == gid){
+						_features.push(
+								new ol.Feature({
+									'geometry': new ol.format.WKT().readGeometry(allFeatureT[i].geom_inter),
+									'size': 10
+									})
+						);
+				}
+	       }
+// 					var styles =  new ol.style.Style({
+// 	                        fill: new ol.style.Fill({color: '#000000'}),
+// 	                        stroke: new ol.style.Stroke({color: '#ffffff', width: 1})
+// 	                      }) ;
+			         
+			         var vectorSource = new ol.source.Vector({
+			            features : _features
+			         });
+			         
+			         selectLayer = new ol.layer.Vector({
+			            id : "chocho",
+			        	source : vectorSource,
+			            style : new ol.style.Style({
+			            	color: 'rgba(255,0,0,1)',
+// 	                        fill: new ol.style.Fill({color: '#000000'}),
+	                        stroke: new ol.style.Stroke({color: '#ffffff', width: 10})
+	                      })
+			         });
+			         
+			         map1.addLayer(selectLayer);
+	 };   
+
 	//테이블 생성
 	var table;
 	var html;
@@ -867,7 +916,7 @@ var map1 = '';
 	  $('#table').DataTable({
 			info : false,
 			lengthChange : false,
-	    	 "pageLength": 5,
+	    	 "pageLength": 3,
 	         ajax:{
 	         	url:"<%=request.getContextPath()%>/sightList",
 	         	type:"POST",
@@ -930,6 +979,8 @@ var map1 = '';
 		
 		
 	}
+
+	
 	//테이블 클릭 이벤트
 	$(document).on('click', '#table tbody tr', function() {
 		time();
@@ -945,7 +996,6 @@ var map1 = '';
       		type : "post",
       		data : {"name" : name},
       		success : function(data){
-      			console.log(data);
       			selectStandard(data.selectStandard);				
       			accident_point(data.selectAccidentPoint);				
       			cctv_point(data.selectCctvPoint);
@@ -958,6 +1008,10 @@ var map1 = '';
       			console.log(error);
       		}
       	})//pointajax
+      	
+    	
+      	
+      	
       	//cntajax
        	$.ajax({
       		url : "<%=request.getContextPath()%>/count",
@@ -1010,6 +1064,8 @@ var map1 = '';
       	})
     });
 	
+
+  	
 	$('#analyzeReset').on('click',function(){
 				map1.removeLayer(selectStandardLayer);
 				map1.removeLayer(accident_pointLayer);

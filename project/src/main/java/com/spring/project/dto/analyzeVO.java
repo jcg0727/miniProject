@@ -14,11 +14,17 @@ public class analyzeVO {
 	private int roadsign_cnt;
 	private int manyaccident_cnt;
 	private String geom_inter;
+	private String gid;
 	
 	
 	
 	
-	
+	public String getGid() {
+		return gid;
+	}
+	public void setGid(String gid) {
+		this.gid = gid;
+	}
 	public int getAccident_cnt() {
 		return accident_cnt;
 	}

@@ -1,5 +1,10 @@
 
 	var selectStandardLayer;
+	var allFeature;
+	function detailAnalyze(){
+  		OpenWindow("/detailAnalyze","교통사고 분석",1038,400);
+  	}
+	
 	function selectStandard(param){
 		removeAnalyzeLayers();
 		  var features = new Array(param.length);		  
@@ -45,7 +50,6 @@
 				score= score*0.8;
 			}
 			 param[i].sco = score;
-          	console.log(param[i].sco);
            }
           
           for (var i = 0; i < param.length; ++i) {
@@ -58,10 +62,13 @@
                'camera_cnt' : param[i].camera_cnt,
                'dump_cnt' : param[i].dump_cnt,
               'roadsign_cnt': param[i].roadsign_cnt,
-               'manyaccident_cnt' : param[i].manyaccident_cnt
+               'manyaccident_cnt' : param[i].manyaccident_cnt,
+               'allFeature' : param
              });
           }//for
-
+          
+          allFeature = param;
+          
           var vectorSource = new ol.source.Vector({
              features : features
           });
@@ -90,7 +97,9 @@
              },
           });
           analyzeLayers.selectStandardLayer = false;
-          map1.addLayer(selectStandardLayer);  
+          map1.addLayer(selectStandardLayer); 
+          detailAnalyze();
+          
         	
 	};
 	var accident_pointLayer;

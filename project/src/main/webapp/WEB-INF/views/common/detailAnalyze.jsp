@@ -23,7 +23,7 @@
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/js/lib2/ol3-layerswitcher.css" />
 	<script type="text/javascript" src="<%=request.getContextPath() %>/resources/js/lib2/ol3-layerswitcher.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath() %>/resources/js/lib2/proj4.js"></script>
-       
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
     <!-- Custom fonts for this template-->
     <link href="<%=request.getContextPath() %>/resources/bootstrap/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
@@ -36,62 +36,63 @@
 <body>
 <div class="card">
               <div class="card-header" style="background-color: #ffe0b2">
-                <h3 class="card-title" style="text-align: center; margin-bottom: 0px;">분석 현황</h3>
+                <h3 class="card-title" style="text-align: center; margin-bottom: 0px;">교통사고 분석 현황</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body p-0">
-                <table class="table table-striped" style="text-align: center;">
+                <table class="table table-striped" style="text-align: center; border: 1;" id="table">
                   <thead style="">
                     <tr>
-                      <th>분석항목</th>
-                      <th>건수</th>
+                      <th>격자번호</th>
+                      <th>교통평가 점수</th>
+                      <th>교통사고 건수</th>
+                      <th>사고다발 건수</th>
+                      <th>무인단속 카메라 수</th>
+                      <th>과속방지턱 수</th>
+                      <th>도로표지판 수</th>
+                      <th>cctv 수</th>
+                      <th>지도확인</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td>교통사고</td>
-                      <td><c:out value="${param.accident_cnt}"></c:out></td>
-                      </tr>
-                    <tr>
-                      <td>사고다발지역</td>
-                      <td><c:out value="${param.manyaccident_cnt}"></c:out></td>
-                      </tr>
-                    <tr>
-                      <td>무인단속카메라</td>
-                      <td><c:out value="${param.camera_cnt}"></c:out></td>
-                      </tr>
-                    <tr>
-                      <td>과속방지턱</td>
-                      <td><c:out value="${param.dump_cnt}"></c:out></td>
-                      </tr>
-                    <tr>
-                      <td>도로표지판</td>
-                      <td><c:out value="${param.roadsign_cnt}"></c:out></td>
-                      </tr>
-                    <tr>
-                      <td>CCTV</td>
-                      <td><c:out value="${param.cctv_cnt}"></c:out></td>
-                      </tr>
-                  </tbody>
                 </table>
-                 <table class="table table-striped" style="text-align: center;">
-                  <thead>
-                    <tr>
-                      <th>점수</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><fmt:formatNumber value="${param.score}" pattern=".0"/></td>
-                  </tbody>
-                </table>
+
               </div>
               <!-- /.card-body -->
             </div>
-                <button type="button" class="btn btn-block btn-secondary btn-sm" style="width: 50px; margin-left: 149px;" id="close">닫기</button>
-            
-            <%@ include file="../include/js.jsp" %>
+                <button type="button" class="btn btn-block btn-secondary btn-sm" style="width: 50px; margin-left: 485px;" id="close">닫기</button>
+            <%@ include file="../include/js2.jsp" %>
             <script>
+        	var table;
+        	var html;
+        	var allFeature = window.opener.allFeature;
+       
+
+        	function createTable(){
+        		
+	        	for(var i=0; i < allFeature.length; ++i){
+					$('#table').append("<tr>")
+					$('#table').append("<td>" + allFeature[i].gid + "</td>")
+					$('#table').append("<td style='background:lightgray; font-size : 20px;'>" + allFeature[i].sco+ "</td>")
+					$('#table').append("<td>" + allFeature[i].accident_cnt+ "</td>")
+					$('#table').append("<td>" + allFeature[i].manyaccident_cnt+ "</td>")
+					$('#table').append("<td>" + allFeature[i].camera_cnt + "</td>")
+					$('#table').append("<td>" + allFeature[i].dump_cnt+ "</td>")
+					$('#table').append("<td>" + allFeature[i].roadsign_cnt+ "</td>")
+					$('#table').append("<td>" + allFeature[i].cctv_cnt + "</td>")
+					$('#table').append('<td><input type="button" value="지도확인" onclick="sendChildValue(\''+allFeature[i].gid+'\')"/></td>')
+					$('#table').append("</tr>")
+				}
+        	};
+        	window.onload= function(){
+        		createTable();
+        	};
+        	
+        	function sendChildValue(gid){
+        		window.opener.childValue(gid);
+        	}
+        	
+        	
+            
             	$('#close').on('click',function(){
             		window.close();
             	})
