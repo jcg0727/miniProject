@@ -49,7 +49,7 @@
 			if(param[i].camera_cnt == 0 && param[i].dump_cnt ==0 && param[i].roadsign_cnt ==0 && param[i].cctv_cnt == 0){
 				score= score*0.8;
 			}
-			 param[i].sco = score;
+			 param[i].sco = score.toFixed(2);
            }
           
           for (var i = 0; i < param.length; ++i) {
@@ -79,12 +79,14 @@
              style : function(feature) {
 					var color_st = feature.get('score');
 					var color;
-					if(color_st >= 10){
+					if(color_st >= 9){
 						color = 'rgba(0,0,255,0.5)';
-					}else if(color_st >= 8){
+					}else if(color_st >= 7.5){
 						color = 'rgba(0,128,0,0.5)';
 					}else if(color_st >=6){
 						color = 'rgba(255,255,0,0.5)';
+					}else if(color_st >=4.5){
+						color = 'rgba(255,127,0,0.5)';
 					}else{
 						color = 'rgba(255,0,0,0.5)';
 					}

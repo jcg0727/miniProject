@@ -69,7 +69,7 @@
 		    }
     	
     	#analyzeMapping{
-    		background-color:gray;width: 140px;height: 170px; position: absolute; z-index: 2; margin-left: 1440px; margin-top: 220px;color:white;font-size:17px;
+    		background-color:gray;width: 170px;height: 200px; position: absolute; z-index: 2; margin-left: 1410px; margin-top: 190px;color:white;font-size:17px;
     	}
     	#analyzeMapping ul li span{
     	    display: block;
@@ -199,10 +199,11 @@
 		               <div style="text-align: center; font: bold; font-size: 25px">분석 범례</div>
 		                <div>
 									<ul style="list-style: none; text-align: left; padding-left: 10px;">
-										   <li><span style='background:blue;'></span>안전</li>
-										   <li><span style='background:green;'></span>양호</li>
-										    <li><span style='background:yellow;'></span>보통</li>
-										    <li><span style='background:red;'></span>심각</li>
+										   <li><span style='background:blue;'></span>안전(9점 이상)</li>
+										   <li><span style='background:green;'></span>양호(7.5점 이상)</li>
+										    <li><span style='background:yellow;'></span>보통(6점 이상)</li>
+										    <li><span style='background:orange;'></span>심각(4.5점 이상)</li>
+										    <li><span style='background:red;'></span>심각(4.5점 미만)</li>
 										    <input type="button" value="분석 초기화" id="analyzeReset"/>
 									</ul>
 										 
@@ -218,8 +219,8 @@
 <!-- 					              </div> -->
 					              <!-- /.card-header -->
 					              <div class="card-body table-responsive p-0">
-										<h4>주요 관광지 교통사고 분석</h4>
-										<table id="table" class="table table-striped table-bordered">
+										<h4 style="text-align: center">주요 관광지 교통사고 분석</h4>
+										<table id="table" class="table table-striped table-bordered" style="cursor: pointer;">
 									        <thead>
 									            <tr>
 									                <th>이름</th>
@@ -874,7 +875,13 @@ var map1 = '';
 	
 	var selectLayer; 
 	function childValue(gid){
-		alert(gid);
+		for(var i=0; i<map1.getLayers().getLength(); i++){
+			if(map1.getLayers().a[i].get('id')=="oneAnalyzeLayer"){
+			map1.removeLayer(selectLayer);
+			}
+		}
+		
+			
 		var allFeatureT = allFeature;
 		var _features = new Array();
 		for(var i =0; i<allFeatureT.length; ++i){
@@ -897,7 +904,7 @@ var map1 = '';
 			         });
 			         
 			         selectLayer = new ol.layer.Vector({
-			            id : "chocho",
+			            id : "oneAnalyzeLayer",
 			        	source : vectorSource,
 			            style : new ol.style.Style({
 			            	color: 'rgba(255,0,0,1)',
@@ -1074,6 +1081,7 @@ var map1 = '';
 				map1.removeLayer(dump_pointLayer);
 				map1.removeLayer(roadsign_pointLayer);
 				map1.removeLayer(manyaccident_pointLayer);
+				map1.removeLayer(selectLayer);
 	})
 	
 	
@@ -1081,7 +1089,7 @@ var map1 = '';
 	<script>
 function time(imageName) {
     LoadingWithMask('<%=request.getContextPath()%>/resources/time.gif');
-    setTimeout("closeLoadingWithMask()", 7000);
+    setTimeout("closeLoadingWithMask()", 10000);
 }
  
 function LoadingWithMask(gif) {

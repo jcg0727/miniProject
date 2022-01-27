@@ -12,7 +12,7 @@
 				   new_addr,
 				   x,
 				   y,
-				   st_buffer(geom,0.002)as buffer
+				   st_buffer(geom,0.0025)as buffer
 			from sight
 		), grid_union as (
 			select st_union(a.trans_geom)  as grid_geom
@@ -42,7 +42,7 @@
 				   new_addr,
 				   x,
 				   y,
-				   st_buffer(geom,0.002)as buffer
+				   st_buffer(geom,0.0025)as buffer
 			from sight
 		), grid_union as (
 			select st_union(a.trans_geom)  as grid_geom
@@ -72,7 +72,7 @@
 				   new_addr,
 				   x,
 				   y,
-				   st_buffer(geom,0.002)as buffer
+				   st_buffer(geom,0.0025)as buffer
 			from sight
 		), grid_union as (
 			select st_union(a.trans_geom)  as grid_geom
@@ -102,7 +102,7 @@
 				   new_addr,
 				   x,
 				   y,
-				   st_buffer(geom,0.002)as buffer
+				   st_buffer(geom,0.0025)as buffer
 			from sight
 		), grid_union as (
 			select st_union(a.trans_geom)  as grid_geom
@@ -132,7 +132,7 @@
 				   new_addr,
 				   x,
 				   y,
-				   st_buffer(geom,0.002)as buffer
+				   st_buffer(geom,0.0025)as buffer
 			from sight
 		), grid_union as (
 			select st_union(a.trans_geom)  as grid_geom
@@ -162,7 +162,7 @@
 				   new_addr,
 				   x,
 				   y,
-				   st_buffer(geom,0.002)as buffer
+				   st_buffer(geom,0.0025)as buffer
 			from sight
 		), grid_union as (
 			select st_union(a.trans_geom)  as grid_geom
@@ -190,7 +190,7 @@
 				   new_addr,
 				   x,
 				   y,
-				   st_buffer(geom,0.002)as buffer
+				   st_buffer(geom,0.0025)as buffer
 			from sight
 			where name = #{name}
 		) 
@@ -264,7 +264,7 @@
 				   new_addr,
 				   x,
 				   y,
-				   st_buffer(geom,0.002)as buffer
+				   st_buffer(geom,0.0025)as buffer
 			from sight
 		) 
 		

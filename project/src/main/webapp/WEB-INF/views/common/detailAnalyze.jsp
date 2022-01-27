@@ -36,11 +36,11 @@
 <body>
 <div class="card">
               <div class="card-header" style="background-color: #ffe0b2">
-                <h3 class="card-title" style="text-align: center; margin-bottom: 0px;">교통사고 분석 현황</h3>
+                <h3 class="card-title" style="text-align: center; margin-bottom: 0px; color: black">교통사고 분석 현황</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body p-0">
-                <table class="table table-striped" style="text-align: center; border: 1;" id="table">
+                <table class="table table-striped" style="text-align: center; border: 1; color: black" id="table">
                   <thead style="">
                     <tr>
                       <th>격자번호</th>
@@ -72,7 +72,7 @@
 	        	for(var i=0; i < allFeature.length; ++i){
 					$('#table').append("<tr>")
 					$('#table').append("<td>" + allFeature[i].gid + "</td>")
-					$('#table').append("<td style='background:lightgray; font-size : 20px;'>" + allFeature[i].sco+ "</td>")
+					$('#table').append("<td style='background:lightgray; font-size : 20px;'>" + allFeature[i].sco+ "/10점</td>")
 					$('#table').append("<td>" + allFeature[i].accident_cnt+ "</td>")
 					$('#table').append("<td>" + allFeature[i].manyaccident_cnt+ "</td>")
 					$('#table').append("<td>" + allFeature[i].camera_cnt + "</td>")
