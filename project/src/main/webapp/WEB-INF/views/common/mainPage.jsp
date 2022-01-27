@@ -102,11 +102,11 @@
             <hr class="sidebar-divider my-0">
 			
 			
-			  <li class="nav-item">
-                <a class="nav-link" id="standard">
-                    <i class="fas fa-fw fa-border-all" ></i>
-                    <span>격자</span></a>
-            </li>
+<!-- 			  <li class="nav-item"> -->
+<!--                 <a class="nav-link" id="standard"> -->
+<!--                     <i class="fas fa-fw fa-border-all" ></i> -->
+<!--                     <span>격자</span></a> -->
+<!--             </li> -->
             <hr class="sidebar-divider my-0">
             
             <!-- Nav Item - Pages Collapse Menu -->
@@ -115,11 +115,11 @@
                     <i class="fas fa-map-pin"></i>
                     <span>관광지</span></a>
             </li>
-             <li class="nav-item">
-                <a class="nav-link" id="road">
-                    <i class="fas fa-road"></i>
-                    <span>도로</span></a>
-            </li>
+<!--              <li class="nav-item"> -->
+<!--                 <a class="nav-link" id="road"> -->
+<!--                     <i class="fas fa-road"></i> -->
+<!--                     <span>도로</span></a> -->
+<!--             </li> -->
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 			
@@ -165,8 +165,8 @@
             <hr class="sidebar-divider d-none d-md-block">
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
-                <button class="btn btn-danger btn-circle" id="reset" style="width: 65px;">reset</button>
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                <button class="btn btn-danger btn-circle" id="reset" style="width: 130px;">레이어 초기화</button>
+<!--                 <button class="rounded-circle border-0" id="sidebarToggle"></button> -->
             </div>
 
         </ul>
@@ -202,7 +202,7 @@
 										   <li><span style='background:green;'></span>양호</li>
 										    <li><span style='background:yellow;'></span>보통</li>
 										    <li><span style='background:red;'></span>심각</li>
-										    <input type="button" value="분석리셋" id="analyzeReset"/>
+										    <input type="button" value="분석 초기화" id="analyzeReset"/>
 									</ul>
 										 
 						</div>
