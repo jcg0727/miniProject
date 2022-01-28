@@ -2,7 +2,7 @@
 	var selectStandardLayer;
 	var allFeature;
 	function detailAnalyze(){
-  		OpenWindow("/detailAnalyze","교통사고 분석",1038,400);
+  		OpenWindow("/detailAnalyze","교통사고 분석",1060,400);
   	}
 	
 	function selectStandard(param){

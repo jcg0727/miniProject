@@ -32,6 +32,9 @@
 		background-color: #f57c00;
 		font-size: 15px;
 	}
+	#table_paginate{
+		margin-right: 390px;
+	}
 	
 	</style>
 	
@@ -95,7 +98,7 @@
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<%=request.getContextPath() %>/mainPage">
-                <div class="sidebar-brand-text mx-3">관광지 기반<br/>제주도 교통사고</div>
+                <div class="sidebar-brand-text mx-3" style="font-size: 23px;">관광지 기반<br/>제주도 교통사고</div>
             </a>
 
             <!-- Divider -->
@@ -188,9 +191,9 @@
 										   <li><span style='background:red;'></span>교통사고</li>
 										    <li><span style='background:purple;'></span>교통사고다발지역</li>
 										    <li><span style='background:#ff6d00;'></span>무인단속카메라</li>
-										    <li><span style='background:blue;'></span>CCTV</li>
-		    								<li><span style='background:black;'></span>도로표지판</li>
 		    								<li><span style='background:#8d6e63;'></span>과속방지턱</li>
+		    								<li><span style='background:black;'></span>도로표지판</li>
+										    <li><span style='background:blue;'></span>CCTV</li>
 									</ul>
 										 
 						</div>
@@ -202,7 +205,7 @@
 										   <li><span style='background:blue;'></span>안전(9점 이상)</li>
 										   <li><span style='background:green;'></span>양호(7.5점 이상)</li>
 										    <li><span style='background:yellow;'></span>보통(6점 이상)</li>
-										    <li><span style='background:orange;'></span>심각(4.5점 이상)</li>
+										    <li><span style='background:orange;'></span>주의(4.5점 이상)</li>
 										    <li><span style='background:red;'></span>심각(4.5점 미만)</li>
 										    <input type="button" value="분석 초기화" id="analyzeReset"/>
 									</ul>
@@ -212,7 +215,7 @@
 						<div id="map" style="height: 605px;"></div>
 						<div class="loadingImg"></div>
 						<div class="row">
-							<div class="col-9" style="padding-right: 0px;">
+							<div class="col-9" style="padding-right: 0px;border-left-width: 20px;padding-left: 20px">
 					            <div class="card">
 <!-- 					              <div class="card-header"> -->
 <!-- 					                	<h4 style="float: left;">주요 관광지</h4> -->
@@ -1089,7 +1092,7 @@ var map1 = '';
 	<script>
 function time(imageName) {
     LoadingWithMask('<%=request.getContextPath()%>/resources/time.gif');
-    setTimeout("closeLoadingWithMask()", 10000);
+    setTimeout("closeLoadingWithMask()", 7000);
 }
  
 function LoadingWithMask(gif) {
